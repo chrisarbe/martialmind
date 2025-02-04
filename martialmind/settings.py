@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hz^nbyh$aeuylv$t9o9s!aol&se+g*(ipo-3)ue@&x=&o$xz#&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['martialmind-production.up.railway.app', 'localhost', '127.0.0.1']
 

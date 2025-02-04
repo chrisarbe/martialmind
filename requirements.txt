@@ -24,3 +24,4 @@ typing_extensions==4.12.2
 tzdata==2022.6
 virtualenv==20.16.7
 wcwidth==0.2.13
+whitenoise==6.8.2

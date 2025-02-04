@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Información</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/toastify/toastify.css' %}">
+</head>
+
+<body>
+    <div id="auth">
+
+        <div class="row h-100">
+            <div class="col-lg-5 col-12">
+                <div id="auth-left">
+                    <div class="auth-logo">
+                        <a href="{% url 'login' %}"><img src="{% static 'images/logo/logo.png' %}" alt="Logo"></a>
+                    </div>
+                    <h1 class="auth-title">Inicio de Sesión.</h1>
+                    <p class="auth-subtitle mb-5">Ingresar Credenciales.</p>
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group position-relative has-icon-left mb-4">
+                            <input type="text" class="form-control form-control-xl" placeholder="Usuario" name="username">
+                            <div class="form-control-icon">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        </div>
+                        <div class="form-group position-relative has-icon-left mb-4">
+                            <input type="password" class="form-control form-control-xl" placeholder="Clave" name="password">
+                            <div class="form-control-icon">
+                                <i class="bi bi-shield-lock"></i>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-lg d-flex align-items-end">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label text-gray-600" for="flexCheckDefault">
+                                Recordarme
+                            </label>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Ingresar</button>
+                    </form>
+                    <div class="text-center mt-5 text-lg fs-4">
+                        <!-- <p class="text-gray-600">No tienes cuenta? <a href="auth-register.html"
+                                class="font-bold">Registrarse</a>.</p> -->
+                        <p><a class="font-bold" href="#">No recuerdas la clave?</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 d-none d-lg-block">
+                <div id="auth-right">
+                    <img src="{% static 'images/bg/bg.jpg' %}" style='height: 100%; width: 100%; object-fit: cover'>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="{% static 'vendors/toastify/toastify.js' %}"></script>
+    <script src="{% static 'js/extensions/toastify.js' %}"></script>
+    
+    <input type="hidden" id="code" name="code" value="{{ code }}">
+    <input type="hidden" id="mesage" name="mesage" value="{{ mesage }}">
+        {% if code == '1' %}
+        <script type="text/javascript">
+            Toastify({
+                text: "{{ mesage }}",
+                duration: 5000
+            }).showToast();
+        </script>
+        {% elif code == '2' %}
+        <script type="text/javascript">
+            Toastify({
+                text: "{{ mesage }}",
+                duration: 5000
+            }).showToast();
+        </script>
+        {% endif %}
+</body>
+
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Información</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'vendors/iconly/bold.css' %}">
+
+    <link rel="stylesheet" href="{% static 'vendors/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.svg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'vendors/toastify/toastify.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/sweetalert2/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/simple-datatables/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/widgets/calc.css' %}">
+    <link rel="stylesheet" href="{% static 'css/extra_style.css' %}">
+</head>
+
+<body>
+    <script src="{% static 'vendors/toastify/toastify.js' %}"></script>
+    <script src="{% static 'js/extensions/toastify.js' %}"></script>
+    <script src="{% static 'js/extensions/sweetalert2.js' %}"></script>
+    <script src="{% static 'vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Container wrapper -->
+        <div class="container-fluid">
+        <!-- Toggle button -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+            <i class="fas fa-bars"></i>
+            </button>
+  
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+                <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                    <img
+                        src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+                        height="15"
+                        alt="MDB Logo"
+                        loading="lazy"
+                    />
+                </a> 
+            </div>
+            <!-- Collapsible wrapper -->
+  
+            <!-- Right elements -->
+            <div class="d-flex align-items-center">
+            <!-- Icon -->
+                <a class="text-reset me-3" href="#">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+  
+                <!-- Notifications -->
+                <div class="btn-group mb-1">
+                    <div class="dropdown dropdown-color-icon">
+                        <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenuButtonEmoji" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span Class="me-50"><i class="bi bi-bell-fill"></i></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEmoji">
+                            <a class="dropdown-item" href="#"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-app-indicator"></i></span>
+                                Notificación 1</a>
+                            <a class="dropdown-item" href="#"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-app-indicator"></i></span>
+                                Notificación 2 </a>
+                            <a class="dropdown-item" href="#"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-app-indicator"></i></span>
+                                Notificación 3</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mb-1">
+                    <div class="dropdown dropdown-color-icon">
+                        <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenuButtonEmoji" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span Class="me-50"><i class="bi bi-info-circle-fill"></i></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEmoji">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                            data-bs-target="#acerca_plataforma"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-info-square-fill"></i></span>
+                                Acerca de ésta Plataforma</a>
+                            <a class="dropdown-item" href="#"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-info-square"></i></span>
+                                Acerca de <strong>arbeSoolutions</strong></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mb-1">
+                    <div class="dropdown dropdown-color-icon">
+                        <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenuButtonEmoji" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span Class="me-50"><i class="bi bi-emoji-laughing-fill"></i></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonEmoji">
+                            <a class="dropdown-item" href="{% url 'profile' %}"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-emoji-laughing-fill"></i></span>
+                                Mi Perfil</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}"><span
+                                    class="dropdown-item-emoji"><i class="bi bi-box-arrow-right"></i></span>
+                                Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right elements -->
+        </div>
+    <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+
+    <div class="modal fade text-left" id="acerca_plataforma" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel1">Acerca de ésta Plataforma</h5>
+                    <button type="button" class="close rounded-pill"
+                        data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {% lorem 1 b random %}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col" style="align-items: center; display: flex; height: 100px; justify-content: center; width: 200px"><img src="{% static 'images/tech/django-logo.png' %}" width="100%"></div>
+                        <div class="col" style="align-items: center; display: flex; height: 100px; justify-content: center; width: 200px"><img src="{% static 'images/tech/python-logo.png' %}" width="100%"></div>
+                        <div class="col" style="align-items: center; display: flex; height: 100px; justify-content: center; width: 200px"><img src="{% static 'images/tech/postgresql-logo.png' %}" width="100%"></div>
+                        <div class="col" style="align-items: center; display: flex; height: 100px; justify-content: center; width: 200px"><img src="{% static 'images/tech/logo-google-cloud.png' %}" width="100%"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Cerrar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="#"><img src="{% static 'images/logo/logo.png' %}" alt="Logo" srcset=""></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Menú</li>
+
+                        <li id="menu_dashboard" class="sidebar-item">
+                            <a href="{% url 'dashboard' %}" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-collection-fill"></i>
+                                <span>Datos Maestros</span>
+                            </a>
+                            <ul id="menu_categorizacion" class="submenu">
+                                <li class="sidebar-item  has-sub">
+                                    <a href="#" class='sidebar-link'>
+                                        <span>🏷️ Categorización</span>
+                                    </a>
+                                    <ul id="menu_categorizacion_2" class="submenu">
+                                        <li id="menu_tipo_documento" class="submenu-item">
+                                            <a href="{% url 'tipo_documento' %}">Tipo de Documento</a>
+                                        </li>
+                                        <li id="menu_eps" class="submenu-item ">
+                                            <a href="#">EPS</a>
+                                        </li>
+                                        <li id="menu_profesion" class="submenu-item ">
+                                            <a href="#">Profesiones</a>
+                                        </li>
+                                        <li id="menu_cinturon" class="submenu-item ">
+                                            <a href="#">Cinturones</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-item  has-sub">
+                                    <a href="#" class='sidebar-link'>
+                                        <span>🌎 Geografía</span>
+                                    </a>
+                                    <ul id="menu_geografia" class="submenu ">
+                                        <li id="menu_pais" class="submenu-item ">
+                                            <a href="{% url 'pais' %}">País</a>
+                                        </li>
+                                        <li id="menu_departamento" class="submenu-item ">
+                                            <a href="{% url 'departamento' %}">Departamento</a>
+                                        </li>
+                                        <li id="menu_municipio" class="submenu-item ">
+                                            <a href="{% url 'municipio' %}">Municipio</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="sidebar-item  has-sub">
+                                    <a href="#" class='sidebar-link'>
+                                        <span>🏫 Escuela</span>
+                                    </a>
+                                    <ul id="menu_escuela" class="submenu ">
+                                        <li id="menu_kwan" class="submenu-item ">
+                                            <a href="#">Kwanes</a>
+                                        </li>
+                                        <li id="menu_academia" class="submenu-item ">
+                                            <a href="#">Academias</a>
+                                        </li>
+                                        <li id="menu_estudiante" class="submenu-item ">
+                                            <a href="#">Estudiantes</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-title">Aplicaciones</li>
+
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-briefcase-fill"></i>
+                                <span>Administración</span>
+                            </a>
+                            <ul id="menu_pos" class="submenu">
+                                <li class="submenu-item">
+                                    <a href="#">Asistencias</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="#">Monitorias</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="#">Servicios</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar2-check-fill"></i>
+                                <span>Asistencias</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-eyeglasses"></i>
+                                <span>Monitorías</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-flag-fill"></i>
+                                <span>Servicios</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-title">Soporte</li>
+
+                        <li id="menu_documentacion" class="sidebar-item  ">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-life-preserver"></i>
+                                <span>Documentación</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-eyeglasses"></i>
+                                <span>Mesa de Servicio</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item  ">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-cash"></i>
+                                <span>Pagos</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+            <div class="page-heading">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <h3>{{ title }}</h3>
+                            <p class="text-subtitle text-muted">{{ subtitle }}</p>
+                        </div>
+                        <!-- <div class="col-12 col-md-6 order-md-2 order-first">
+                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">{{ title }}</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">DataTable</li> 
+                                </ol>
+                            </nav>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Tool Calculator -->
+            <div class="modal fade text-left w-100" id="tool_calculator" tabindex="-1"
+            role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal"
+                    role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel16">Calculadora</h4>
+                            <button type="button" class="close" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                <i data-feather="x"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="calculator card">
+
+                                <input type="text" class="calculator-screen z-depth-1" value="" disabled />
+                              
+                                <div class="calculator-keys">
+                              
+                                  <button  type="button" data-mdb-button-init class="operator btn btn-info" value="+">+</button>
+                                  <button  type="button" data-mdb-button-init class="operator btn btn-info" value="-">-</button>
+                                  <button  type="button" data-mdb-button-init class="operator btn btn-info" value="*">&times;</button>
+                                  <button  type="button" data-mdb-button-init class="operator btn btn-info" value="/">&divide;</button>
+                              
+                                  <button  type="button" data-mdb-button-init value="7" data-mdb-ripple-init class="btn btn-light waves-effect">7</button>
+                                  <button  type="button" data-mdb-button-init value="8" data-mdb-ripple-init class="btn btn-light waves-effect">8</button>
+                                  <button  type="button" data-mdb-button-init value="9" data-mdb-ripple-init class="btn btn-light waves-effect">9</button>
+                              
+                              
+                                  <button  type="button" data-mdb-button-init value="4" data-mdb-ripple-init class="btn btn-light waves-effect">4</button>
+                                  <button  type="button" data-mdb-button-init value="5" data-mdb-ripple-init class="btn btn-light waves-effect">5</button>
+                                  <button  type="button" data-mdb-button-init value="6" data-mdb-ripple-init class="btn btn-light waves-effect">6</button>
+                              
+                              
+                                  <button  type="button" data-mdb-button-init value="1" data-mdb-ripple-init class="btn btn-light waves-effect">1</button>
+                                  <button  type="button" data-mdb-button-init value="2" data-mdb-ripple-init class="btn btn-light waves-effect">2</button>
+                                  <button  type="button" data-mdb-button-init value="3" data-mdb-ripple-init class="btn btn-light waves-effect">3</button>
+                              
+                              
+                                  <button  type="button" data-mdb-button-init value="0" data-mdb-ripple-init class="btn btn-light waves-effect">0</button>
+                                  <button  type="button" data-mdb-button-init class="decimal function btn btn-secondary" value=".">.</button>
+                                  <button  type="button" data-mdb-button-init class="all-clear function btn btn-danger btn-sm" value="all-clear">AC</button>
+                              
+                                  <button  type="button" data-mdb-button-init class="equal-sign operator btn btn-default" value="=">=</button>
+                              
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-secondary"
+                                data-bs-dismiss="modal">
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Cerrar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% block content %}
+
+            {% endblock %}
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; Korea Hapkido Jeong Jin Kwan</p>
+                    </div>
+                    <div class="float-end">
+                        <p>Created with <span class="text-danger"><i class="bi bi-heart-fill"></i></span> by <a
+                                href="#">arbeSoolutions</a></p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="{% static 'vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script src="{% static 'vendors/apexcharts/apexcharts.js' %}"></script>
+    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/widgets/calc.js' %}"></script>
+    {% block javascripts %}{% endblock javascripts %}
+</body>
+
+</html>

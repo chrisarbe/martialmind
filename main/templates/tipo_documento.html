@@ -1,0 +1,215 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="row">
+                    <div class="card-header">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#agregar_tipo_documento">Añadir</a>
+                        <!-- Modal Adicionar Tipo de Documento -->
+                        <div class="modal fade text-left w-100" id="agregar_tipo_documento" tabindex="-1"
+                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel16">Agregar Tipo de Documento</h4>
+                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form" method="POST">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="nombre-columna">Nombre de Tipo de Documento</label>
+                                                        <input type="text" id="nombre" class="form-control"
+                                                            placeholder="Nombre Tipo de Documento" name="nombre">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-end">
+                                                <button type="submit"
+                                                    class="btn btn-primary me-1 mb-1" onclick="tipo_documento_agregar()">Guardar</button>
+                                                <button type="reset"
+                                                    class="btn btn-light-secondary me-1 mb-1" onclick="reiniciar_formulario()">Reiniciar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light-secondary"
+                                            data-bs-dismiss="modal">
+                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Cerrar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                Lista de Datos
+            </div>
+            <div class="card-body">
+                <table class="table table-striped" id="table1">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in lista %}
+                        <tr>
+                            <td>{{ x.nombre }}</td>
+                            <td>
+                                <div class="btn-group me-1 mb-1">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Acciones
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#" onclick="tipo_documento_ver('{{x.id}}')">Ver</a>
+                                            <a class="dropdown-item" href="#" onclick="tipo_documento_editar('{{x.id}}')">Editar</a>
+                                            <a class="dropdown-item" href="#" onclick="tipo_documento_borrar('{{x.id}}')">Borrar</a>
+                                        </div>
+                                        <!-- Modal Ver Tipo de Documento -->
+                                        <div class="modal fade text-left w-100" id="ver_tipo_documento" tabindex="-1"
+                                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                                role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel16">Vista Tipo de Documento</h4>
+                                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="nombre-columna">Nombre de Tipo de Documento</label>
+                                                                        <input for="disabledInput" type="text" id="nombre_ver" class="form-control" name="nombre_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Cerrar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Editar Tipo de Documento -->
+                                        <div class="modal fade text-left w-100" id="editar_tipo_documento" tabindex="-1"
+                                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                                role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel16">Edición Tipo de Documento</h4>
+                                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form" method="POST">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="nombre-columna">Nombre de Tipo de Documento</label>
+                                                                        <input type="text" id="nombre_editar" class="form-control" name="nombre_editar" value="...">
+                                                                        <input type="hidden" id="pk_editar" class="form-control" name="pk_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-end">
+                                                                <button
+                                                                    class="btn btn-primary me-1 mb-1" onclick="tipo_documento_editar_guardar()">Guardar</button>
+                                                                <button type="reset"
+                                                                    class="btn btn-light-secondary me-1 mb-1">Reiniciar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Cerrar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+{% block javascripts %}
+    <script src="{% static 'js/maestros/tipo_documento.js' %}"></script>
+    <script src="{% static 'vendors/simple-datatables/simple-datatables.js' %}"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+{% endblock javascripts %}
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        console.log("{{ mesage }}");
+      }
+</script>
+{% if context.code == '2' %}
+<script type="text/javascript">
+    Swal.fire({
+        icon: "success",
+        title: "{{ mesage }}"
+    });
+</script>
+{% elif code == '3' %}
+<script type="text/javascript">
+    Swal.fire({
+        icon: "error",
+        title: "{{ mesage }}"
+    });
+</script>
+{% endif %}
+{% endblock %}

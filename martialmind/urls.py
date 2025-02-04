@@ -31,6 +31,24 @@ urlpatterns = [
     path('tipo_documento/ver/', views.tipo_documento_ver, name='tipo_documento_ver'),
     path('tipo_documento/editar/', views.tipo_documento_editar, name='tipo_documento_editar'),
     path('tipo_documento/borrar/', views.tipo_documento_borrar, name='tipo_documento_borrar'),
+    # Entidad Promotora de Salud
+    path('eps/', views.eps, name='eps'),
+    path('eps/agregar/', views.eps_agregar, name='eps_agregar'),
+    path('eps/ver/', views.eps_ver, name='eps_ver'),
+    path('eps/editar/', views.eps_editar, name='eps_editar'),
+    path('eps/borrar/', views.eps_borrar, name='eps_borrar'),
+    # Profesion
+    path('profesion/', views.profesion, name='profesion'),
+    path('profesion/agregar/', views.profesion_agregar, name='profesion_agregar'),
+    path('profesion/ver/', views.profesion_ver, name='profesion_ver'),
+    path('profesion/editar/', views.profesion_editar, name='profesion_editar'),
+    path('profesion/borrar/', views.profesion_borrar, name='profesion_borrar'),
+    # Cinturon
+    path('cinturon/', views.cinturon, name='cinturon'),
+    path('cinturon/agregar/', views.cinturon_agregar, name='cinturon_agregar'),
+    path('cinturon/ver/', views.cinturon_ver, name='cinturon_ver'),
+    path('cinturon/editar/', views.cinturon_editar, name='cinturon_editar'),
+    path('cinturon/borrar/', views.cinturon_borrar, name='cinturon_borrar'),
     # Pais
     path('pais/', views.pais, name='pais'),
     path('pais/agregar/', views.pais_agregar, name='pais_agregar'),
@@ -49,4 +67,16 @@ urlpatterns = [
     path('municipio/ver/', views.municipio_ver, name='municipio_ver'),
     path('municipio/editar/', views.municipio_editar, name='municipio_editar'),
     path('municipio/borrar/', views.municipio_borrar, name='municipio_borrar'),
+    # Kwan
+    path('kwan/', views.kwan, name='kwan'),
+    path('kwan/agregar/', views.kwan_agregar, name='kwan_agregar'),
+    path('kwan/ver/', views.kwan_ver, name='kwan_ver'),
+    path('kwan/editar/', views.kwan_editar, name='kwan_editar'),
+    path('kwan/borrar/', views.kwan_borrar, name='kwan_borrar'),
+    # Academia
+    path('academia/', views.academia, name='academia'),
+    path('academia/agregar/', views.academia_agregar, name='academia_agregar'),
+    path('academia/ver/', views.academia_ver, name='academia_ver'),
+    path('academia/editar/', views.academia_editar, name='academia_editar'),
+    path('academia/borrar/', views.academia_borrar, name='academia_borrar'),
 ]

@@ -25,6 +25,12 @@ class Cinturon(models.Model):
     def __str__(self):
         return self.nombre
     
+class Kwan(models.Model):
+    nombre=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+    
 class Pais(models.Model):
     nombre=models.CharField(max_length=100)
 
@@ -43,6 +49,17 @@ class Departamento(models.Model):
 class Municipio(models.Model):
     nombre=models.CharField(max_length=100)
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+    
+class Academia(models.Model):
+    nombre=models.CharField(max_length=100)
+    kwan=models.ForeignKey(Kwan, on_delete=models.CASCADE)
+    direccion=models.CharField(max_length=100)
+    telefono=models.CharField(max_length=100)
+    correo=models.EmailField()
+    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre

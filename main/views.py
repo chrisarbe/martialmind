@@ -51,6 +51,7 @@ def signout(request):
     logout(request)
     return redirect('login')
 
+#----- Tipo de Documento -----#  
 def tipo_documento(request):
     if request.user.is_authenticated:
         lista = TipoDocumento.objects.all()
@@ -61,7 +62,7 @@ def tipo_documento(request):
         })
     else:
         return render(request, 'login.html')
-    
+
 def tipo_documento_agregar(request):
     if request.method == 'GET':
         return render(request, 'tipo_documento.html', {
@@ -125,6 +126,7 @@ def tipo_documento_borrar(request):
                 'code':'3'
                 })
     
+#----- Pais -----#
 def pais(request):
     if request.user.is_authenticated:
         lista = Pais.objects.all()
@@ -193,6 +195,7 @@ def pais_borrar(request):
                 'code':'3'
                 })
 
+#----- Departamento -----#
 def departamento(request):
     if request.user.is_authenticated:
         lista = Departamento.objects.all()
@@ -204,8 +207,6 @@ def departamento(request):
             'lista':lista,
             'paises':paises
         })
-        #response = serializers.serialize("json", paises)
-        #return HttpResponse(response, content_type='application/json')
     else:
         return render(request, 'login.html')
 
@@ -268,6 +269,7 @@ def departamento_borrar(request):
                 'code':'3'
                 })
 
+#----- Municipio -----#
 def municipio(request):
     if request.user.is_authenticated:
         lista = Municipio.objects.all()
@@ -337,3 +339,359 @@ def municipio_borrar(request):
                 'mesage':'Error',
                 'code':'3'
                 })
+
+#----- EPS -----#  
+def eps(request):
+    if request.user.is_authenticated:
+        lista = EntidadPromotoraSalud.objects.all()
+        return render(request, 'eps.html', {
+            'title':'Entidad Promotora de Salud',
+            'subtitle':'Administración de Entidades Promotoras de Salud',
+            'lista':lista
+        })
+    else:
+        return render(request, 'login.html')
+
+def eps_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'eps.html', {
+            'mesage':'Formulario Entidad Promotora de Salud',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = EntidadPromotoraSalud.objects.filter(nombre=request.POST['nombre'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de EPS: ' + str(request.POST['nombre']), 'status' : '0'}, status=200)
+            else:
+                documento = EntidadPromotoraSalud(nombre=request.POST['nombre'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'eps.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def eps_ver(request):
+    item = EntidadPromotoraSalud.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def eps_editar(request):
+    if request.method == 'GET':
+        return render(request, 'eps.html', {
+            'mesage':'Formulario Entidad Promotora de Salud',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = EntidadPromotoraSalud.objects.filter(nombre=request.POST['nombre_editar'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de EPS: ' + str(request.POST['nombre_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = EntidadPromotoraSalud.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def eps_borrar(request):
+    try:
+        item = EntidadPromotoraSalud.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'eps.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+    
+#----- Profesion -----#
+def profesion(request):
+    if request.user.is_authenticated:
+        lista = Profesion.objects.all()
+        return render(request, 'profesion.html', {
+            'title':'Profesión',
+            'subtitle':'Administración de Profesiones',
+            'lista':lista
+        })
+    else:
+        return render(request, 'login.html')
+    
+def profesion_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'profesion.html', {
+            'mesage':'Formulario Profesión',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Profesion.objects.filter(nombre=request.POST['nombre'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Profesión: ' + str(request.POST['nombre']), 'status' : '0'}, status=200)
+            else:
+                documento = Profesion(nombre=request.POST['nombre'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'profesion.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def profesion_ver(request):
+    item = Profesion.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def profesion_editar(request):
+    if request.method == 'GET':
+        return render(request, 'profesion.html', {
+            'mesage':'Formulario Profesión',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Profesion.objects.filter(nombre=request.POST['nombre_editar'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Profesión: ' + str(request.POST['nombre_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Profesion.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def profesion_borrar(request):
+    try:
+        item = Profesion.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'profesion.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+
+#----- Cinturon -----#
+def cinturon(request):
+    if request.user.is_authenticated:
+        lista = Cinturon.objects.all()
+        return render(request, 'cinturon.html', {
+            'title':'Cinturón',
+            'subtitle':'Administración de Cinturones',
+            'lista':lista
+        })
+    else:
+        return render(request, 'login.html')
+
+def cinturon_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'cinturon.html', {
+            'mesage':'Formulario Cinturón',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Cinturon.objects.filter(nombre=request.POST['nombre'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Cinturón: ' + str(request.POST['nombre']), 'status' : '0'}, status=200)
+            else:
+                documento = Cinturon(nombre=request.POST['nombre'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'cinturon.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def cinturon_ver(request):
+    item = Cinturon.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def cinturon_editar(request):
+    if request.method == 'GET':
+        return render(request, 'cinturon.html', {
+            'mesage':'Formulario Cinturón',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Cinturon.objects.filter(nombre=request.POST['nombre_editar'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Cinturón: ' + str(request.POST['nombre_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Cinturon.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def cinturon_borrar(request):
+    try:
+        item = Cinturon.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'cinturon.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+    
+#----- Kwan -----#
+def kwan(request):
+    if request.user.is_authenticated:
+        lista = Kwan.objects.all()
+        return render(request, 'kwan.html', {
+            'title':'Kwan',
+            'subtitle':'Administración de Kwanes',
+            'lista':lista
+        })
+    else:
+        return render(request, 'login.html')
+    
+def kwan_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'kwan.html', {
+            'mesage':'Formulario Kwan',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Kwan.objects.filter(nombre=request.POST['nombre'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Kwan: ' + str(request.POST['nombre']), 'status' : '0'}, status=200)
+            else:
+                documento = Kwan(nombre=request.POST['nombre'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'kwan.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+
+def kwan_ver(request):
+    item = Kwan.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def kwan_editar(request):
+    if request.method == 'GET':
+        return render(request, 'kwan.html', {
+            'mesage':'Formulario Kwan',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Kwan.objects.filter(nombre=request.POST['nombre_editar'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Kwan: ' + str(request.POST['nombre_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Kwan.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+
+def kwan_borrar(request):
+    try:
+        item = Kwan.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'kwan.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+    
+#----- Academia -----#
+def academia(request):
+    if request.user.is_authenticated:
+        lista = Academia.objects.all()
+        kwanes = Kwan.objects.all()
+        municipios = Municipio.objects.all()
+        return render(request, 'academia.html', {
+            'title':'Academia',
+            'subtitle':'Administración de Academias',
+            'lista':lista,
+            'kwanes':kwanes,
+            'municipios':municipios
+        })
+    else:
+        return render(request, 'login.html')
+    
+def academia_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'academia.html', {
+            'mesage':'Formulario Academia',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Academia.objects.filter(nombre=request.POST['nombre'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Academia: ' + str(request.POST['nombre']), 'status' : '0'}, status=200)
+            else:
+                documento = Academia()
+                documento.nombre = request.POST['nombre']
+                documento.kwan = Kwan.objects.get(pk = request.POST['kwan'])
+                documento.direccion = request.POST['direccion']
+                documento.telefono = request.POST['telefono']
+                documento.correo = request.POST['correo']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'academia.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def academia_ver(request):
+    item = Academia.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def academia_editar(request):
+    if request.method == 'GET':
+        return render(request, 'academia.html', {
+            'mesage':'Formulario Academia',
+            'code':'1'
+            })
+    else:
+        try:
+            nombre_validar = Academia.objects.filter(nombre=request.POST['nombre_editar'], kwan=request.POST['kwan_editar'])
+            if nombre_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el nombre de Academia: ' + str(request.POST['nombre_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Academia.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.kwan = Kwan.objects.get(pk = request.POST['kwan_editar'])
+                documento.direccion = request.POST['direccion_editar']
+                documento.telefono = request.POST['telefono_editar']
+                documento.correo = request.POST['correo_editar']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio_editar'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+
+def academia_borrar(request):
+    try:
+        item = Academia.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'academia.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-hz^nbyh$aeuylv$t9o9s!aol&se+g*(ipo-3)ue@&x=&o$xz#&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['martialmind-production.up.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

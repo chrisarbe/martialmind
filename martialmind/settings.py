@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,35 +76,17 @@ WSGI_APPLICATION = 'martialmind.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'martial_mind',
-        'USER': 'postgres',
-        'PASSWORD': 'Chris7255$',
-        'HOST': 'localhost',
-        'PORT': 5432,
-    }
-} """
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.pcoizoxcfwrdpzirzqxu',
-        'PASSWORD': 'Chris7255Arbe*',
-        'HOST': 'aws-0-us-west-1.pooler.supabase.com',
-        'PORT': 5432,
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
     }
 } 
 
-""" DATABASES = {
-    'default': dj_database_url.config(
-        default="postgres://postgres.pcoizoxcfwrdpzirzqxu:Chris7255Arbe*@aws-0-us-west-1.pooler.supabase.com:5432/postgres?sslmode=require",
-        conn_max_age=100,
-        ssl_require=True  # Para conexiones seguras
-    )
-} """
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

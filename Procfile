@@ -1,1 +1,3 @@
-web: gunicorn martialmind.wsgi:application --bind 0.0.0.0:9000
+web: gunicorn martialmind.wsgi:application --preload
+postdeploy: python manage.py collectstatic --noinput
+

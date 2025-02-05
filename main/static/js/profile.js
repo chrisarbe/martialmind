@@ -55,9 +55,7 @@ function estudiante_profile(username) {
             document.getElementById("carnet").innerText = data[0].fields.codigo_carnet;
             cinturon_traer(data[0].fields.cinturon);
         }
-    }).always(function() {
-        $('#ver_estudiante').modal('show');
-       });
+    });
 }
 
 function cinturon_traer(pk) {
@@ -80,9 +78,7 @@ function cinturon_traer(pk) {
                 document.getElementById("eres").innerText = "Estudiante";
             }
         }
-    }).always(function() {
-        $('#editar_cinturon').modal('show');
-       });
+    });
 }
 
 function calcularEdad(fechaNacimiento) {
@@ -99,9 +95,6 @@ function calcularEdad(fechaNacimiento) {
 
     return edad;
 }
-
-// Ejemplo de uso:
-console.log(calcularEdad("1995-06-15")); // Devuelve la edad actual
 
 
 function getCookie(name) {

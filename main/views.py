@@ -13,10 +13,14 @@ def home(request):
     
 def dashboard(request):
     if request.user.is_authenticated:
+        lista = Estudiante.objects.all()
         return render(request, 'dashboard.html', {
+            'title':'Estudiante',
+            'subtitle':'Administración de Estudiantes',
+            'lista':lista,
             'title':'Dashboard',
             'subtitle':'Resumen de tu Sistema de Información'
-            })
+        })
     else:
         return render(request, 'login.html')
     

@@ -79,4 +79,22 @@ urlpatterns = [
     path('academia/ver/', views.academia_ver, name='academia_ver'),
     path('academia/editar/', views.academia_editar, name='academia_editar'),
     path('academia/borrar/', views.academia_borrar, name='academia_borrar'),
+    # Acudiente
+    path('acudiente/', views.acudiente, name='acudiente'),
+    path('acudiente/agregar/', views.acudiente_agregar, name='acudiente_agregar'),
+    path('acudiente/ver/', views.acudiente_ver, name='acudiente_ver'),
+    path('acudiente/editar/', views.acudiente_editar, name='acudiente_editar'),
+    path('acudiente/borrar/', views.acudiente_borrar, name='acudiente_borrar'),
+    # Fecha de Pago
+    path('fecha_pago/', views.fecha_pago, name='fecha_pago'),
+    path('fecha_pago/agregar/', views.fecha_pago_agregar, name='fecha_pago_agregar'),
+    path('fecha_pago/ver/', views.fecha_pago_ver, name='fecha_pago_ver'),
+    path('fecha_pago/editar/', views.fecha_pago_editar, name='fecha_pago_editar'),
+    path('fecha_pago/borrar/', views.fecha_pago_borrar, name='fecha_pago_borrar'),
+    # Estudiante
+    path('estudiante/', views.estudiante, name='estudiante'),
+    path('estudiante/agregar/', views.estudiante_agregar, name='estudiante_agregar'),
+    path('estudiante/ver/', views.estudiante_ver, name='estudiante_ver'),
+    path('estudiante/editar/', views.estudiante_editar, name='estudiante_editar'),
+    path('estudiante/borrar/', views.estudiante_borrar, name='estudiante_borrar'),
 ]

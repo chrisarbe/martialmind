@@ -63,3 +63,43 @@ class Academia(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Acudiente(models.Model):
+    nombre=models.CharField(max_length=100)
+    apellido=models.CharField(max_length=100)
+    tipo_documento=models.ForeignKey(TipoDocumento, on_delete=models.CASCADE)
+    documento=models.CharField(max_length=20)
+    telefono=models.CharField(max_length=20)
+    correo=models.EmailField()
+    direccion=models.CharField(max_length=100)
+    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+    
+class FechaPago(models.Model):
+    valor=models.CharField(max_length=7)
+
+    def __str__(self):
+        return self.valor
+    
+class Estudiante(models.Model):
+    nombre=models.CharField(max_length=100)
+    apellido=models.CharField(max_length=100)
+    tipo_documento=models.ForeignKey(TipoDocumento, on_delete=models.CASCADE)
+    documento=models.CharField(max_length=20)
+    fecha_nacimiento=models.DateField()
+    telefono=models.CharField(max_length=20)
+    correo=models.EmailField()
+    direccion=models.CharField(max_length=100)
+    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
+    eps = models.ForeignKey(EntidadPromotoraSalud, on_delete=models.CASCADE)
+    profesion = models.ForeignKey(Profesion, on_delete=models.CASCADE)
+    cinturon = models.ForeignKey(Cinturon, on_delete=models.CASCADE)
+    acudiente = models.ForeignKey(Acudiente, on_delete=models.CASCADE)
+    academia = models.ForeignKey(Academia, on_delete=models.CASCADE)
+    codigo_carnet=models.CharField(max_length=8)
+    fecha_pago = models.ForeignKey(FechaPago, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre

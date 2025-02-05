@@ -1,0 +1,591 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="row">
+                    <div class="card-header">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#agregar_estudiante">Añadir</a>
+                        <!-- Modal Adicionar Estudiante -->
+                        <div class="modal fade text-left w-100" id="agregar_estudiante" tabindex="-1"
+                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel16">Agregar Estudiante</h4>
+                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form" method="POST">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="nombre-columna">Nombre de Estudiante</label>
+                                                        <input type="text" id="nombre" class="form-control"
+                                                            placeholder="Nombre Estudiante" name="nombre">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="apellido-columna">Apellido de Estudiante</label>
+                                                        <input type="text" id="apellido" class="form-control"
+                                                            placeholder="Apellido Estudiante" name="apellido">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="tipo-documento-columna">Tipo de Documento</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="tipo_documento" name="tipo_documento">
+                                                            {% for x in tipo_documentos %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="documento-columna">Documento de Estudiante</label>
+                                                        <input type="text" id="documento" class="form-control"
+                                                            placeholder="Documento Estudiante" name="documento">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="fecha-nacimiento-columna">Fecha Nacimiento de Estudiante</label>
+                                                        <input type="date" id="fecha_nacimiento" class="form-control"
+                                                            placeholder="Fecha Nacimiento Estudiante" name="fecha_nacimiento">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="direccion-columna">Dirección</label>
+                                                        <input type="text" id="direccion" class="form-control"
+                                                            placeholder="Direccion Estudiante" name="direccion">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="telefono-columna">Teléfono</label>
+                                                        <input type="text" id="telefono" class="form-control"
+                                                            placeholder="Telefono Estudiante" name="telefono">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="correo-columna">Correo Electrónico</label>
+                                                        <input type="text" id="correo" class="form-control"
+                                                            placeholder="Correo Electronico Estudiante" name="correo">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="municipio-columna">Municipio</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="municipio" name="municipio">
+                                                            {% for x in municipios %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="eps-columna">EPS</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="eps" name="eps">
+                                                            {% for x in eps %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="profesion-columna">Profesión</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="profesion" name="profesion">
+                                                            {% for x in profesiones %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="cinturon-columna">Cinturón</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="cinturon" name="cinturon">
+                                                            {% for x in cinturones %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="acudiente-columna">Acudiente</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="acudiente" name="acudiente">
+                                                            {% for x in acudientes %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="academia-columna">Academia</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="academia" name="academia">
+                                                            {% for x in academias %}
+                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <div class="form-group">
+                                                        <label for="codigo-carnet-columna">Código Carnet</label>
+                                                        <input type="text" id="codigo_carnet" class="form-control"
+                                                            placeholder="Código Carnet Estudiante" name="codigo_carnet">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="fecha-pago-columna">Fecha de Pago</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="fecha_pago" name="fecha_pago">
+                                                            {% for x in fecha_pagos %}
+                                                            <option value="{{ x.pk }}">{{ x.valor }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row">
+                                            <div class="col-12 d-flex justify-content-end">
+                                                <button type="submit"
+                                                    class="btn btn-primary me-1 mb-1" onclick="estudiante_agregar()">Guardar</button>
+                                                <button type="reset"
+                                                    class="btn btn-light-secondary me-1 mb-1" onclick="reiniciar_formulario()">Reiniciar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light-secondary"
+                                            data-bs-dismiss="modal">
+                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                            <span class="d-none d-sm-block">Cerrar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                Lista de Datos
+            </div>
+            <div class="card-body">
+                <table class="table table-striped" id="table1">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Cinturón</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in lista %}
+                        <tr>
+                            <td>{{ x.nombre }}</td>
+                            <td>{{ x.apellido }}</td>
+                            <td>{{ x.cinturon }}</td>
+                            <td>
+                                <div class="btn-group me-1 mb-1">
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Acciones
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#" onclick="estudiante_ver('{{x.id}}')">Ver</a>
+                                            <a class="dropdown-item" href="#" onclick="estudiante_editar('{{x.id}}')">Editar</a>
+                                            <a class="dropdown-item" href="#" onclick="estudiante_borrar('{{x.id}}')">Borrar</a>
+                                        </div>
+                                        <!-- Modal Ver Estudiente -->
+                                        <div class="modal fade text-left w-100" id="ver_estudiante" tabindex="-1"
+                                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                                role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel16">Vista Estudiente</h4>
+                                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="nombre-columna">Nombre de Estudiente</label>
+                                                                        <input for="disabledInput" type="text" id="nombre_ver" class="form-control" name="nombre_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="apellido-columna">Apellido de Estudiente</label>
+                                                                        <input for="disabledInput" type="text" id="apellido_ver" class="form-control" name="apellido_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="tipo-documento-columna">Tipo de Documento</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="tipo_documento_ver" name="tipo_documento_ver" disabled>
+                                                                            {% for x in tipo_documentos %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="documento-columna">Documento de Estudiente</label>
+                                                                        <input for="disabledInput" type="text" id="documento_ver" class="form-control" name="documento_ver" value="..." disabled>  
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fecha-nacimiento-columna">Fecha Nacimiento de Estudiente</label>
+                                                                        <input for="disabledInput" type="date" id="fecha_nacimiento_ver" class="form-control" name="fecha_nacimiento_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="direccion-columna">Dirección</label>
+                                                                        <input for="disabledInput" type="text" id="direccion_ver" class="form-control" name="direccion_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="telefono-columna">Teléfono</label>
+                                                                        <input for="disabledInput" type="text" id="telefono_ver" class="form-control" name="telefono_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="correo-columna">Correo Electrónico</label>
+                                                                        <input for="disabledInput" type="text" id="correo_ver" class="form-control" name="correo_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="municipio-columna">Municipio</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="municipio_ver" name="municipio_ver" disabled>
+                                                                            {% for x in municipios %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="eps-columna">EPS</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="eps_ver" name="eps_ver" disabled>
+                                                                            {% for x in eps %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="profesion-columna">Profesión</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="profesion_ver" name="profesion_ver" disabled>
+                                                                            {% for x in profesiones %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="cinturon-columna">Cinturón</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="cinturon_ver" name="cinturon_ver" disabled>
+                                                                            {% for x in cinturones %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div> 
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="acudiente-columna">Acudiente</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="acudiente_ver" name="acudiente_ver" disabled>
+                                                                            {% for x in acudientes %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="academia-columna">Academia</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="academia_ver" name="academia_ver" disabled>
+                                                                            {% for x in academias %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>  
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="codigo-carnet-columna">Código Carnet</label>
+                                                                        <input for="disabledInput" type="text" id="codigo_carnet_ver" class="form-control" name="codigo_carnet_ver" value="..." disabled>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="fecha-pago-columna">Fecha de Pago</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="fecha_pago_ver" name="fecha_pago_ver" disabled>
+                                                                            {% for x in fecha_pagos %}
+                                                                            <option value="{{ x.pk }}">{{ x.valor }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>  
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Cerrar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Editar Estudiante -->
+                                        <div class="modal fade text-left w-100" id="editar_estudiante" tabindex="-1"
+                                        role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+                                                role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel16">Edición Estudiente</h4>
+                                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form" method="POST">
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="nombre-columna">Nombre de Estudiante</label>
+                                                                        <input type="text" id="nombre_editar" class="form-control" name="nombre_editar" value="...">
+                                                                        <input type="hidden" id="pk_editar" class="form-control" name="pk_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="apellido-columna">Apellido de Estudiante</label>
+                                                                        <input type="text" id="apellido_editar" class="form-control" name="apellido_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="tipo-documento-columna">Tipo de Documento</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="tipo_documento_editar" name="tipo_documento_editar">
+                                                                            {% for x in tipo_documentos %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="documento-columna">Documento de Estudiante</label>
+                                                                        <input type="text" id="documento_editar" class="form-control" name="documento_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fecha-nacimiento-columna">Fecha Nacimiento de Estudiante</label>
+                                                                        <input type="date" id="fecha_nacimiento_editar" class="form-control" name="fecha_nacimiento_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="direccion-columna">Dirección</label>
+                                                                        <input type="text" id="direccion_editar" class="form-control" name="direccion_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="telefono-columna">Teléfono</label>
+                                                                        <input type="text" id="telefono_editar" class="form-control" name="telefono_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="correo-columna">Correo Electrónico</label>
+                                                                        <input type="text" id="correo_editar" class="form-control" name="correo_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="municipio-columna">Municipio</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="municipio_editar" name="municipio_editar">
+                                                                            {% for x in municipios %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="eps-columna">EPS</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="eps_editar" name="eps_editar">
+                                                                            {% for x in eps %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="profesion-columna">Profesión</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="profesion_editar" name="profesion_editar">
+                                                                            {% for x in profesiones %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="cinturon-columna">Cinturón</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="cinturon_editar" name="cinturon_editar">
+                                                                            {% for x in cinturones %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="acudiente-columna">Acudiente</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="acudiente_editar" name="acudiente_editar">
+                                                                            {% for x in acudientes %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="academia-columna">Academia</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="academia_editar" name="academia_editar">
+                                                                            {% for x in academias %}
+                                                                            <option value="{{ x.pk }}">{{ x.nombre }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 col-12">
+                                                                    <div class="form-group">
+                                                                        <label for="codigo-carnet-columna">Código Carnet</label>
+                                                                        <input type="text" id="codigo_carnet_editar" class="form-control" name="codigo_carnet_editar" value="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="fecha-pago-columna">Fecha de Pago</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="fecha_pago_editar" name="fecha_pago_editar">
+                                                                            {% for x in fecha_pagos %}
+                                                                            <option value="{{ x.pk }}">{{ x.valor }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-end">
+                                                                <button
+                                                                    class="btn btn-primary me-1 mb-1" onclick="estudiante_editar_guardar()">Guardar</button>
+                                                                <button type="reset"
+                                                                    class="btn btn-light-secondary me-1 mb-1">Reiniciar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light-secondary"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                            <span class="d-none d-sm-block">Cerrar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+{% block javascripts %}
+    <script src="{% static 'js/maestros/estudiante.js' %}"></script>
+    <script src="{% static 'vendors/simple-datatables/simple-datatables.js' %}"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+{% endblock javascripts %}
+
+<script type="text/javascript">
+    window.onload = function () {
+        console.log("{{ mesage }}");
+      }
+</script>
+{% if context.code == '2' %}
+<script type="text/javascript">
+    Swal.fire({
+        icon: "success",
+        title: "{{ mesage }}"
+    });
+</script>
+{% elif code == '3' %}
+<script type="text/javascript">
+    Swal.fire({
+        icon: "error",
+        title: "{{ mesage }}"
+    });
+</script>
+{% endif %}
+{% endblock %}

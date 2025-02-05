@@ -694,4 +694,274 @@ def academia_borrar(request):
                 'mesage':'Error',
                 'code':'3'
                 })
+    
+#----- Acudiente -----#
+def acudiente(request):
+    if request.user.is_authenticated:
+        lista = Acudiente.objects.all()
+        tipo_documentos = TipoDocumento.objects.all()
+        municipios = Municipio.objects.all()
+        return render(request, 'acudiente.html', {
+            'title':'Acudiente',
+            'subtitle':'Administración de Acudientes',
+            'lista':lista,
+            'tipo_documentos':tipo_documentos,
+            'municipios':municipios
+        })
+    else:
+        return render(request, 'login.html')
+
+def acudiente_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'acudiente.html', {
+            'mesage':'Formulario Acudiente',
+            'code':'1'
+            })
+    else:
+        try:
+            documento_validar = Acudiente.objects.filter(documento=request.POST['documento'])
+            if documento_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el Documento de Acudiente: ' + str(request.POST['nombre'] + ' ' + request.POST['apellido']), 'status' : '0'}, status=200)
+            else:
+                documento = Acudiente()
+                documento.nombre = request.POST['nombre']
+                documento.apellido = request.POST['apellido']
+                documento.tipo_documento = TipoDocumento.objects.get(pk = request.POST['tipo_documento'])
+                documento.documento = request.POST['documento']
+                documento.direccion = request.POST['direccion']
+                documento.telefono = request.POST['telefono']
+                documento.correo = request.POST['correo']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'acudiente.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def acudiente_ver(request):
+    item = Acudiente.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def acudiente_editar(request):
+    if request.method == 'GET':
+        return render(request, 'acudiente.html', {
+            'mesage':'Formulario Acudiente',
+            'code':'1'
+            })
+    else:
+        try:
+            documento_validar = Acudiente.objects.filter(documento=request.POST['documento_editar'])
+            if documento_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el Documento de Acudiente: ' + str(request.POST['nombre_editar'] + ' ' + request.POST['apellido_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Acudiente.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.apellido = request.POST['apellido_editar']
+                documento.tipo_documento = TipoDocumento.objects.get(pk = request.POST['tipo_documento_editar'])
+                documento.documento = request.POST['documento_editar']
+                documento.direccion = request.POST['direccion_editar']
+                documento.telefono = request.POST['telefono_editar']
+                documento.correo = request.POST['correo_editar']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio_editar'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def acudiente_borrar(request):
+    try:
+        item = Acudiente.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'acudiente.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+
+#----- Fecha de Pago -----#
+def fecha_pago(request):
+    if request.user.is_authenticated:
+        lista = FechaPago.objects.all()
+        return render(request, 'fecha_pago.html', {
+            'title':'Fecha de Pago',
+            'subtitle':'Administración de Fechas de Pago',
+            'lista':lista
+        })
+    else:
+        return render(request, 'login.html')
+    
+def fecha_pago_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'fecha_pago.html', {
+            'mesage':'Formulario Fecha de Pago',
+            'code':'1'
+            })
+    else:
+        try:
+            valor_validar = FechaPago.objects.filter(valor=request.POST['valor'])
+            if valor_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el valor de Fecha de Pago: ' + str(request.POST['valor']), 'status' : '0'}, status=200)
+            else:
+                documento = FechaPago(valor=request.POST['valor'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'fecha_pago.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def fecha_pago_ver(request):
+    item = FechaPago.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def fecha_pago_editar(request):
+    if request.method == 'GET':
+        return render(request, 'fecha_pago.html', {
+            'mesage':'Formulario Fecha de Pago',
+            'code':'1'
+            })
+    else:
+        try:
+            valor_validar = FechaPago.objects.filter(valor=request.POST['valor_editar'])
+            if valor_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el valor de Fecha de Pago: ' + str(request.POST['valor_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = FechaPago.objects.get(pk=request.POST['pk_editar'])
+                documento.valor = request.POST['valor_editar']
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def fecha_pago_borrar(request):
+    try:
+        item = FechaPago.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'fecha_pago.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+    
+#----- Estudiante -----#
+def estudiante(request):
+    if request.user.is_authenticated:
+        lista = Estudiante.objects.all()
+        tipo_documentos = TipoDocumento.objects.all()
+        municipios = Municipio.objects.all()
+        profesiones = Profesion.objects.all()
+        acudientes = Acudiente.objects.all()
+        academias = Academia.objects.all()
+        cinturones = Cinturon.objects.all()
+        eps = EntidadPromotoraSalud.objects.all()
+        fecha_pagos = FechaPago.objects.all()
+        return render(request, 'estudiante.html', {
+            'title':'Estudiante',
+            'subtitle':'Administración de Estudiantes',
+            'lista':lista,
+            'tipo_documentos':tipo_documentos,
+            'municipios':municipios,
+            'profesiones':profesiones,
+            'acudientes':acudientes,
+            'academias':academias,
+            'cinturones':cinturones,
+            'eps':eps,
+            'fecha_pagos':fecha_pagos
+        })
+    else:
+        return render(request, 'login.html')
+    
+def estudiante_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'estudiante.html', {
+            'mesage':'Formulario Estudiante',
+            'code':'1'
+            })
+    else:
+        try:
+            documento_validar = Estudiante.objects.filter(documento=request.POST['documento'])
+            if documento_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el Documento de Estudiante: ' + str(request.POST['nombre'] + ' ' + request.POST['apellido']), 'status' : '0'}, status=200)
+            else:
+                documento = Estudiante()
+                documento.nombre = request.POST['nombre']
+                documento.apellido = request.POST['apellido']
+                documento.tipo_documento = TipoDocumento.objects.get(pk = request.POST['tipo_documento'])
+                documento.documento = request.POST['documento']
+                documento.fecha_nacimiento = request.POST['fecha_nacimiento']
+                documento.direccion = request.POST['direccion']
+                documento.telefono = request.POST['telefono']
+                documento.correo = request.POST['correo']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio'])
+                documento.acudiente = Acudiente.objects.get(pk = request.POST['acudiente'])
+                documento.academia = Academia.objects.get(pk = request.POST['academia'])
+                documento.cinturon = Cinturon.objects.get(pk = request.POST['cinturon'])
+                documento.eps = EntidadPromotoraSalud.objects.get(pk = request.POST['eps'])
+                documento.profesion = Profesion.objects.get(pk = request.POST['profesion'])
+                documento.codigo_carnet = request.POST['codigo_carnet']
+                documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'estudiante.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def estudiante_ver(request):
+    item = Estudiante.objects.filter(pk=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def estudiante_editar(request):
+    if request.method == 'GET':
+        return render(request, 'estudiante.html', {
+            'mesage':'Formulario Estudiante',
+            'code':'1'
+            })
+    else:
+        try:
+            documento_validar = Estudiante.objects.filter(documento=request.POST['documento_editar'])
+            if documento_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro con el Documento de Estudiante: ' + str(request.POST['nombre_editar'] + ' ' + request.POST['apellido_editar']), 'status' : '0'}, status=200)
+            else:
+                documento = Estudiante.objects.get(pk=request.POST['pk_editar'])
+                documento.nombre = request.POST['nombre_editar']
+                documento.apellido = request.POST['apellido_editar']
+                documento.tipo_documento = TipoDocumento.objects.get(pk = request.POST['tipo_documento_editar'])
+                documento.documento = request.POST['documento_editar']
+                documento.fecha_nacimiento = request.POST['fecha_nacimiento_editar']
+                documento.direccion = request.POST['direccion_editar']
+                documento.telefono = request.POST['telefono_editar']
+                documento.correo = request.POST['correo_editar']
+                documento.municipio = Municipio.objects.get(pk = request.POST['municipio_editar'])
+                documento.profesion = Profesion.objects.get(pk = request.POST['profesion_editar'])
+                documento.acudiente = Acudiente.objects.get(pk = request.POST['acudiente_editar'])
+                documento.academia = Academia.objects.get(pk = request.POST['academia_editar'])
+                documento.cinturon = Cinturon.objects.get(pk = request.POST['cinturon_editar'])
+                documento.eps = EntidadPromotoraSalud.objects.get(pk = request.POST['eps_editar'])
+                documento.codigo_carnet = request.POST['codigo_carnet_editar']
+                documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago_editar'])
+                documento.save()
+                return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
+        
+def estudiante_borrar(request):
+    try:
+        item = Estudiante.objects.get(pk=request.POST['dato'])
+        item.delete()
+        return JsonResponse({'message' : 'Registro eliminado con exito', 'status' : '1'}, status=200)
+    except ValueError:
+        return render(request, 'estudiante.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
 

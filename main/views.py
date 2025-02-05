@@ -28,6 +28,11 @@ def profile(request):
             })
     else:
         return render(request, 'login.html')
+    
+def profile_user(request):
+    item = Estudiante.objects.filter(usuario_id=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
 
 
 def login_user(request):
@@ -862,6 +867,7 @@ def estudiante(request):
         cinturones = Cinturon.objects.all()
         eps = EntidadPromotoraSalud.objects.all()
         fecha_pagos = FechaPago.objects.all()
+        usuario = User.objects.all()
         return render(request, 'estudiante.html', {
             'title':'Estudiante',
             'subtitle':'Administración de Estudiantes',
@@ -873,7 +879,8 @@ def estudiante(request):
             'academias':academias,
             'cinturones':cinturones,
             'eps':eps,
-            'fecha_pagos':fecha_pagos
+            'fecha_pagos':fecha_pagos,
+            'usuarios':usuario
         })
     else:
         return render(request, 'login.html')
@@ -907,6 +914,7 @@ def estudiante_agregar(request):
                 documento.profesion = Profesion.objects.get(pk = request.POST['profesion'])
                 documento.codigo_carnet = request.POST['codigo_carnet']
                 documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago'])
+                documento.usuario = User.objects.get(pk = request.POST['usuario'])
                 documento.save()
                 return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
         except ValueError:
@@ -949,6 +957,7 @@ def estudiante_editar(request):
                 documento.eps = EntidadPromotoraSalud.objects.get(pk = request.POST['eps_editar'])
                 documento.codigo_carnet = request.POST['codigo_carnet_editar']
                 documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago_editar'])
+                documento.usuario = User.objects.get(pk = request.POST['usuario_editar'])
                 documento.save()
                 return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
         except ValueError:

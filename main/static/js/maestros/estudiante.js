@@ -61,6 +61,7 @@ function estudiante_ver(pk) {
             $("#academia_ver").val(data[0].fields.academia);
             $("#codigo_carnet_ver").val(data[0].fields.codigo_carnet);
             $("#fecha_pago_ver").val(data[0].fields.fecha_pago);
+            $("#usuario_ver").val(data[0].fields.usuario);
         }
     }).always(function() {
         $('#ver_estudiante').modal('show');
@@ -93,6 +94,7 @@ function estudiante_editar(pk) {
             $("#academia_editar").val(data[0].fields.academia);
             $("#codigo_carnet_editar").val(data[0].fields.codigo_carnet);
             $("#fecha_pago_editar").val(data[0].fields.fecha_pago);
+            $("#usuario_editar").val(data[0].fields.usuario);
             $("#pk_editar").val(data[0].pk);
         }
     }).always(function() {
@@ -118,6 +120,7 @@ function estudiante_editar_guardar() {
     var academia = $("#academia_editar").val();
     var codigo_carnet = $("#codigo_carnet_editar").val();
     var fecha_pago = $("#fecha_pago_editar").val();
+    var usuario = $("#usuario_editar").val();
     var pk = $("#pk_editar").val();
     if (nombre == "") {
 		$( "#nombre_editar" ).addClass( "is-invalid" );
@@ -165,6 +168,7 @@ function estudiante_editar_guardar() {
                 academia_editar:document.getElementById("academia_editar").value,
                 codigo_carnet_editar:document.getElementById("codigo_carnet_editar").value,
                 fecha_pago_editar:document.getElementById("fecha_pago_editar").value,
+                usuario_editar:document.getElementById("usuario_editar").value,
                 pk_editar:document.getElementById("pk_editar").value
             },
             success: function (data) {
@@ -204,6 +208,7 @@ function estudiante_agregar() {
     var academia = $("#academia").val();
     var codigo_carnet = $("#codigo_carnet").val();
     var fecha_pago = $("#fecha_pago").val();
+    var usuario = $("#usuario").val();
     if (nombre == "") {
         $( "#nombre" ).addClass( "is-invalid" );
         Swal.fire({
@@ -249,7 +254,8 @@ function estudiante_agregar() {
                 acudiente:document.getElementById("acudiente").value,
                 academia:document.getElementById("academia").value,
                 codigo_carnet:document.getElementById("codigo_carnet").value,
-                fecha_pago:document.getElementById("fecha_pago").value
+                fecha_pago:document.getElementById("fecha_pago").value,
+                usuario:document.getElementById("usuario").value
             },
             success: function (data) {
                 if(data.status != "1") {

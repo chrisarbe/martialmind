@@ -22,11 +22,12 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-lg-12 " align="center"> <img alt="User Pic" src="{% static 'images/faces/19.png' %}" class="img-circle img-responsive"> </div>
                                                     <div class=" col-md-12 col-lg-12 "> 
+                                                        <input type="hidden" id="username_pk" class="form-control" name="username_pk" value="{{user.id}}">
                                                         <table class="table table-user-information">
                                                             <tbody>
                                                                 <tr>
                                                                     <td>Documento de Identidad:</td>
-                                                                    <td>1088008692</td>
+                                                                    <td id="documento">...</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Fecha de Activación:</td>
@@ -38,34 +39,23 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Fecha de Nacimiento:</td>
-                                                                    <td>21-11-1991</td>
+                                                                    <td id="fecha_nacimiento">...</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Edad:</td>
-                                                                    <td>33</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>EPS:</td>
-                                                                    <td>SOS</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Genero:</td>
-                                                                    <td>Masculino</td>
+                                                                    <td id="edad">...</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Dirección:</td>
-                                                                    <td>TV 35 # 3D -101</td>
+                                                                    <td id="direccion">...</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Teléfono:</td>
-                                                                    <td>3117212965</td>
+                                                                    <td id="telefono">...</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Email</td>
                                                                     <td><a href="mailto:{{user.email}}">{{user.email}}</a></td>
-                                                                <tr>
-                                                                    <td>Profesión:</td>
-                                                                    <td>Ingeniero de Sistemas</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -93,15 +83,17 @@
                                 <h5 class="font-bold">Eres:</h5>
                             </div>
                             <div class="value col-6">
-                                <h5 class="font-bold valueinfo">Estudiante</h5>
+                                <h5 class="font-bold valueinfo" id="eres">...</h5>
                             </div>
                         </div>
                         <div class="avatar avatar-xl col-12">
                             <div class="grade col-6">
                                 <h5 class="font-bold">Grado Cinturón:</h5>
                             </div>
-                            <div class="value col-6">
-                                <img src="{% static 'images/faces/cinta_negra.png' %}" alt="Cinta Amarilla">
+                            <div class="value col-6" id="grado_cinturon">
+                                {% if 0.cinturon == 1%}
+                                    <img src="{% static 'images/faces/cinta_negra.png' %}" alt="Cinta Amarilla">
+                                {% endif %}
                             </div>
                         </div>
                         <div class="avatar avatar-xl col-12">

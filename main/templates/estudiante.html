@@ -163,6 +163,16 @@
                                                         </select>
                                                     </fieldset>
                                                 </div>
+                                                <div class="col-md-6 mb-12">
+                                                    <label for="usuario-columna">Usuario</label>
+                                                    <fieldset class="form-group">
+                                                        <select class="form-select" id="usuario" name="usuario">
+                                                            {% for x in usuarios %}
+                                                            <option value="{{ x.pk }}">{{ x.username }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
                                             </div>
                                         </form>
                                         <div class="row">
@@ -367,6 +377,16 @@
                                                                         </select>
                                                                     </fieldset>
                                                                 </div>  
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="usuario-columna">Usuario</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="usuario_ver" name="usuario_ver" disabled>
+                                                                            {% for x in usuarios %}
+                                                                            <option value="{{ x.pk }}">{{ x.username }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -521,6 +541,16 @@
                                                                         <select class="form-select" id="fecha_pago_editar" name="fecha_pago_editar">
                                                                             {% for x in fecha_pagos %}
                                                                             <option value="{{ x.pk }}">{{ x.valor }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="col-md-6 mb-12">
+                                                                    <label for="usuario-columna">Usuario</label>
+                                                                    <fieldset class="form-group">
+                                                                        <select class="form-select" id="usuario_editar" name="usuario_editar">
+                                                                            {% for x in usuarios %}
+                                                                            <option value="{{ x.pk }}">{{ x.username }}</option>
                                                                             {% endfor %}
                                                                         </select>
                                                                     </fieldset>

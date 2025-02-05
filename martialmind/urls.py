@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.home),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/', views.profile, name='profile'),
+    path('estudiante_profile/ver/', views.profile_user, name='estudiante_profile'),
     path('login/', views.login_user, name='login'),
     path('logout/', views.signout, name='logout'),
     # Tipo de Documento

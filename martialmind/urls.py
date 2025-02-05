@@ -26,6 +26,8 @@ urlpatterns = [
     path('estudiante_profile/ver/', views.profile_user, name='estudiante_profile'),
     path('login/', views.login_user, name='login'),
     path('logout/', views.signout, name='logout'),
+    path('asistencia/', views.asistencia, name='asistencia'),
+    path('asistencia_estudiante/', views.estudiante_asistencia_traer, name='asistencia_estudiante'),
     # Tipo de Documento
     path('tipo_documento/', views.tipo_documento, name='tipo_documento'),
     path('tipo_documento/agregar/', views.tipo_documento_agregar, name='tipo_documento_agregar'),

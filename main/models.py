@@ -102,6 +102,7 @@ class Estudiante(models.Model):
     codigo_carnet=models.CharField(max_length=8)
     fecha_pago = models.ForeignKey(FechaPago, on_delete=models.CASCADE)
     usuario=models.ForeignKey(User, on_delete=models.CASCADE, default='1')
+    aldia=models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre

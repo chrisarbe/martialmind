@@ -262,8 +262,8 @@
                                 <i class="bi bi-briefcase-fill"></i>
                                 <span>Administración</span>
                             </a>
-                            <ul id="menu_pos" class="submenu">
-                                <li class="submenu-item">
+                            <ul id="menu_admin" class="submenu">
+                                <li class="submenu-item" id="menu_asistencia_admin">
                                     <a href="#">Asistencias</a>
                                 </li>
                                 <li class="submenu-item">
@@ -275,10 +275,10 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
+                        <li id="menu_asistencia" class="sidebar-item">
+                            <a href="{% url 'asistencia' %}" class='sidebar-link'>
                                 <i class="bi bi-calendar2-check-fill"></i>
-                                <span>Asistencias</span>
+                                <span>Asistencia</span>
                             </a>
                         </li>
 

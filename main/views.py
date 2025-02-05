@@ -34,6 +34,20 @@ def profile_user(request):
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
 
+def asistencia(request):
+    if request.user.is_authenticated:
+        return render(request, 'asistencia.html', {
+            'title':'Asistencia',
+            'subtitle':'Módulo de Asistencias'
+            })
+    else:
+        return render(request, 'login.html')
+    
+def estudiante_asistencia_traer(request):
+    item = Estudiante.objects.filter(codigo_carnet=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
 
 def login_user(request):
     if request.method == 'GET':

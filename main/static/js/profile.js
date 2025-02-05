@@ -52,6 +52,7 @@ function estudiante_profile(username) {
             document.getElementById("edad").innerText = calcularEdad(data[0].fields.fecha_nacimiento);
             document.getElementById("direccion").innerText = data[0].fields.direccion;
             document.getElementById("telefono").innerText = data[0].fields.telefono;
+            document.getElementById("carnet").innerText = data[0].fields.codigo_carnet;
             cinturon_traer(data[0].fields.cinturon);
         }
     }).always(function() {

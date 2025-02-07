@@ -106,3 +106,11 @@ class Estudiante(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Asistencia(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    fecha=models.DateField()
+    hora=models.TimeField()
+
+    def __str__(self):
+        return self.estudiante.nombre

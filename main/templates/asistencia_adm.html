@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/asistencia_adm.css' %}">
+
+{% block content %}
+<div class="page-content">
+    <section class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Resumen Mensual</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" method="POST">
+                                <div class="row">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <input type="text" id="nombre" class="form-control" name="nombre"
+                                                placeholder="Nombre de Estudiante" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Resumen Anual</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" method="POST">
+                                <div class="row">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <input type="text" id="nombre" class="form-control" name="nombre"
+                                                placeholder="Nombre de Estudiante" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Calendario</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="container py-5">
+                                    <div id="calendar" class="bg-white"></div>
+                                </div>
+                            </div>
+                            <div class="divider">
+                                <div class="divider-text">🥋</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% block javascripts %}
+    <script src="{% static 'js/asistencia_adm.js' %}"></script>
+{% endblock javascripts %}
+{% endblock %}

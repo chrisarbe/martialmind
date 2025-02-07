@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import *
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
+from datetime import datetime, date
 
 # Create your views here.
 def home(request):
@@ -47,10 +48,47 @@ def asistencia(request):
     else:
         return render(request, 'login.html')
     
+def asistencia_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'asistencia.html', {
+            'mesage':'Formulario Asistencia',
+            'code':'1'
+            })
+    else:
+        try:
+            item = Estudiante.objects.filter(codigo_carnet=request.POST['estudiante'])
+            estudiante_id = item[0].id
+            documento_validar = Asistencia.objects.filter(fecha=date.today(), estudiante=item[0].id)
+            if documento_validar.exists():
+                return JsonResponse({'message' : 'Ya existe un registro de Asistencia HOY para el Estudiante: ' + item[0].nombre}, status=200)
+            elif item[0].aldia == False:
+                return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+            else:
+                documento = Asistencia()
+                documento.fecha = date.today()
+                documento.hora = datetime.now().strftime("%H:%M:%S")
+                documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
+                documento.save()
+                return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre, 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'asistencia.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+    
 def estudiante_asistencia_traer(request):
     item = Estudiante.objects.filter(codigo_carnet=request.POST['dato'])
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
+
+def asistencia_adm(request):
+    if request.user.is_authenticated:
+        return render(request, 'asistencia_adm.html', {
+            'title':'Administración de Asistencias',
+            'subtitle':'Módulo de Administración de Asistencias'
+            })
+    else:
+        return render(request, 'login.html')
 
 
 def login_user(request):

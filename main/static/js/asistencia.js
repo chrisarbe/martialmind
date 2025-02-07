@@ -10,7 +10,7 @@ function detectarCaracteres() {
     const inputField = document.getElementById('codigo');  // Obtén el campo de entrada
     if (inputField.value.length === 8) {  // Verifica si tiene 8 caracteres
         console.log(inputField.value)
-        asistencia_estudiante(inputField.value);  // Ejecuta la función si tiene 8 caracteres
+        asistencia_agregar(inputField.value);  // Ejecuta la función si tiene 8 caracteres
     }
 }
 
@@ -49,6 +49,43 @@ function asistencia_estudiante(codigo_carnet) {
                     willClose: () => {
                         $("#codigo").val("");
                         //location.reload();  // Recargar la página después de cerrar la alerta
+                    }
+                });
+            }
+        }
+    });
+}
+
+function asistencia_agregar(codigo_carnet) {
+    const csrftoken = getCookie('csrftoken'); 
+    $.ajax({
+        url: '/asistencia/agregar/',
+        type: 'POST',
+        headers:{"X-CSRFToken": csrftoken },
+        data: { 
+            estudiante:codigo_carnet
+        },
+        success: function (data) {
+            console.log(data)
+            if(data.status != "1") {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message,
+                    timer: 5000,  // 5000 milisegundos = 5 segundos
+                    showConfirmButton: false,  // Oculta el botón de "OK"
+                    willClose: () => {
+                        $("#codigo").val("");
+                    }
+                });
+            }else{
+                Swal.fire({
+                    icon: "success",
+                    title: data.message,
+                    timer: 5000,  // 5000 milisegundos = 5 segundos
+                    confirmButtonColor: '#81D4FA',
+                    showConfirmButton: false,  // Oculta el botón de "OK"
+                    willClose: () => {
+                        $("#codigo").val("");
                     }
                 });
             }

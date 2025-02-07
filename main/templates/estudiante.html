@@ -130,6 +130,7 @@
                                                     <label for="acudiente-columna">Acudiente</label>
                                                     <fieldset class="form-group">
                                                         <select class="form-select" id="acudiente" name="acudiente">
+                                                            <option value="">Sin Acudiente</option>
                                                             {% for x in acudientes %}
                                                             <option value="{{ x.pk }}">{{ x.nombre }}</option>
                                                             {% endfor %}
@@ -167,6 +168,7 @@
                                                     <label for="usuario-columna">Usuario</label>
                                                     <fieldset class="form-group">
                                                         <select class="form-select" id="usuario" name="usuario">
+                                                            <option value="">Sin Usuario</option>
                                                             {% for x in usuarios %}
                                                             <option value="{{ x.pk }}">{{ x.username }}</option>
                                                             {% endfor %}
@@ -356,6 +358,7 @@
                                                                     <label for="acudiente-columna">Acudiente</label>
                                                                     <fieldset class="form-group">
                                                                         <select class="form-select" id="acudiente_ver" name="acudiente_ver" disabled>
+                                                                            <option value="">Sin Acudiente</option>
                                                                             {% for x in acudientes %}
                                                                             <option value="{{ x.pk }}">{{ x.nombre }}</option>
                                                                             {% endfor %}
@@ -392,6 +395,7 @@
                                                                     <label for="usuario-columna">Usuario</label>
                                                                     <fieldset class="form-group">
                                                                         <select class="form-select" id="usuario_ver" name="usuario_ver" disabled>
+                                                                            <option value="">Sin Usuario</option>
                                                                             {% for x in usuarios %}
                                                                             <option value="{{ x.pk }}">{{ x.username }}</option>
                                                                             {% endfor %}
@@ -535,6 +539,7 @@
                                                                     <label for="acudiente-columna">Acudiente</label>
                                                                     <fieldset class="form-group">
                                                                         <select class="form-select" id="acudiente_editar" name="acudiente_editar">
+                                                                            <option value="">Sin Acudiente</option>
                                                                             {% for x in acudientes %}
                                                                             <option value="{{ x.pk }}">{{ x.nombre }}</option>
                                                                             {% endfor %}
@@ -571,6 +576,7 @@
                                                                     <label for="usuario-columna">Usuario</label>
                                                                     <fieldset class="form-group">
                                                                         <select class="form-select" id="usuario_editar" name="usuario_editar">
+                                                                            <option value="">Sin Usuario</option>
                                                                             {% for x in usuarios %}
                                                                             <option value="{{ x.pk }}">{{ x.username }}</option>
                                                                             {% endfor %}

@@ -97,11 +97,11 @@ class Estudiante(models.Model):
     eps = models.ForeignKey(EntidadPromotoraSalud, on_delete=models.CASCADE)
     profesion = models.ForeignKey(Profesion, on_delete=models.CASCADE)
     cinturon = models.ForeignKey(Cinturon, on_delete=models.CASCADE)
-    acudiente = models.ForeignKey(Acudiente, on_delete=models.CASCADE)
+    acudiente = models.ForeignKey(Acudiente, on_delete=models.CASCADE, null=True, blank=True)
     academia = models.ForeignKey(Academia, on_delete=models.CASCADE)
     codigo_carnet=models.CharField(max_length=8)
     fecha_pago = models.ForeignKey(FechaPago, on_delete=models.CASCADE)
-    usuario=models.ForeignKey(User, on_delete=models.CASCADE, default='1')
+    usuario=models.ForeignKey(User, on_delete=models.CASCADE, default='1', null=True, blank=True)
     aldia=models.BooleanField(default=False)
 
     def __str__(self):

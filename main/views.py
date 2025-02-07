@@ -981,6 +981,11 @@ def estudiante_agregar(request):
                 documento.codigo_carnet = request.POST['codigo_carnet']
                 documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago'])
                 documento.usuario = User.objects.get(pk = request.POST['usuario'])
+                if request.POST['aldia'] == 'true':
+                    documento.aldia = True
+                elif request.POST['aldia'] == 'false':
+                    documento.aldia = False
+                #documento.aldia = request.POST['aldia']
                 documento.save()
                 return JsonResponse({'message' : 'Registro Agregado con Éxito', 'status' : '1'}, status=200)
         except ValueError:
@@ -1024,6 +1029,10 @@ def estudiante_editar(request):
                 documento.codigo_carnet = request.POST['codigo_carnet_editar']
                 documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago_editar'])
                 documento.usuario = User.objects.get(pk = request.POST['usuario_editar'])
+                if request.POST['aldia_editar'] == 'true':
+                    documento.aldia = True
+                elif request.POST['aldia_editar'] == 'false':
+                    documento.aldia = False
                 documento.save()
                 return JsonResponse({'message' : 'Registro Actualizado con exito', 'status' : '1'}, status=200)
         except ValueError:

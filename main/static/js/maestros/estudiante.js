@@ -45,6 +45,7 @@ function estudiante_ver(pk) {
             dato:pk
         },
         success: function (data) {
+            console.log(data)
             $("#nombre_ver").val(data[0].fields.nombre);
             $("#apellido_ver").val(data[0].fields.apellido);
             $("#tipo_documento_ver").val(data[0].fields.tipo_documento);
@@ -62,6 +63,7 @@ function estudiante_ver(pk) {
             $("#codigo_carnet_ver").val(data[0].fields.codigo_carnet);
             $("#fecha_pago_ver").val(data[0].fields.fecha_pago);
             $("#usuario_ver").val(data[0].fields.usuario);
+            document.getElementById("aldia_ver").value = (data[0].fields.aldia);
         }
     }).always(function() {
         $('#ver_estudiante').modal('show');
@@ -95,6 +97,7 @@ function estudiante_editar(pk) {
             $("#codigo_carnet_editar").val(data[0].fields.codigo_carnet);
             $("#fecha_pago_editar").val(data[0].fields.fecha_pago);
             $("#usuario_editar").val(data[0].fields.usuario);
+            document.getElementById("aldia_editar").value = (data[0].fields.aldia);
             $("#pk_editar").val(data[0].pk);
         }
     }).always(function() {
@@ -169,6 +172,7 @@ function estudiante_editar_guardar() {
                 codigo_carnet_editar:document.getElementById("codigo_carnet_editar").value,
                 fecha_pago_editar:document.getElementById("fecha_pago_editar").value,
                 usuario_editar:document.getElementById("usuario_editar").value,
+                aldia_editar:document.getElementById("aldia_editar").value,
                 pk_editar:document.getElementById("pk_editar").value
             },
             success: function (data) {
@@ -255,7 +259,8 @@ function estudiante_agregar() {
                 academia:document.getElementById("academia").value,
                 codigo_carnet:document.getElementById("codigo_carnet").value,
                 fecha_pago:document.getElementById("fecha_pago").value,
-                usuario:document.getElementById("usuario").value
+                usuario:document.getElementById("usuario").value,
+                aldia:document.getElementById("aldia").value
             },
             success: function (data) {
                 if(data.status != "1") {

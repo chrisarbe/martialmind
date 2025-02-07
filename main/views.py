@@ -57,19 +57,22 @@ def asistencia_agregar(request):
     else:
         try:
             item = Estudiante.objects.filter(codigo_carnet=request.POST['estudiante'])
-            estudiante_id = item[0].id
-            documento_validar = Asistencia.objects.filter(fecha=date.today(), estudiante=item[0].id)
-            if documento_validar.exists():
-                return JsonResponse({'message' : 'Ya existe un registro de Asistencia HOY para el Estudiante: ' + item[0].nombre}, status=200)
-            elif item[0].aldia == False:
-                return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+            if not item.exists():
+                return JsonResponse({'message' : 'No existe registro con el código de Estudiante: ' + str(request.POST['estudiante']), 'status' : '0'}, status=200)
             else:
-                documento = Asistencia()
-                documento.fecha = date.today()
-                documento.hora = datetime.now().strftime("%H:%M:%S")
-                documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
-                documento.save()
-                return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre, 'status' : '1'}, status=200)
+                estudiante_id = item[0].id
+                documento_validar = Asistencia.objects.filter(fecha=date.today(), estudiante=item[0].id)
+                if documento_validar.exists():
+                    return JsonResponse({'message' : 'Ya existe un registro de Asistencia HOY para el Estudiante: ' + item[0].nombre}, status=200)
+                elif item[0].aldia == False:
+                    return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+                else:
+                    documento = Asistencia()
+                    documento.fecha = date.today()
+                    documento.hora = datetime.now().strftime("%H:%M:%S")
+                    documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
+                    documento.save()
+                    return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre, 'status' : '1'}, status=200)
         except ValueError:
             return render(request, 'asistencia.html', {
                 'mesage':'Error',

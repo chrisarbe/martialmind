@@ -53,6 +53,11 @@ function estudiante_profile(username) {
             document.getElementById("direccion").innerText = data[0].fields.direccion;
             document.getElementById("telefono").innerText = data[0].fields.telefono;
             document.getElementById("carnet").innerText = data[0].fields.codigo_carnet;
+            if (data[0].fields.aldia == true) {
+                document.getElementById("aldia").innerText = "✅";
+            } else {
+                document.getElementById("aldia").innerText = "❌";
+            }
             cinturon_traer(data[0].fields.cinturon);
         }
     });

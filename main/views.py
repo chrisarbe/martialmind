@@ -89,6 +89,16 @@ def asistencia_adm(request):
             })
     else:
         return render(request, 'login.html')
+    
+def asistencia_traer(request):
+    item = Asistencia.objects.filter(estudiante=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def estudiantes_traer(request):
+    item = Estudiante.objects.all()
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
 
 
 def login_user(request):

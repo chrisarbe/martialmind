@@ -2,6 +2,14 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/asistencia_adm.css' %}">
 
+<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/calendars/calendar-1/assets/css/calendar-1.css">
+
+<script>
+    $(document).ready(function() {
+        $('#table1').DataTable();
+    });
+    </script>
+
 {% block content %}
 <div class="page-content">
     <section class="row">
@@ -14,16 +22,35 @@
                         </div>
                         <div class="modal-body">
                             <form class="form" method="POST">
+                                {% csrf_token %}
                                 <div class="row">
-                                    <div class="col-md-12 col-12">
+                                    <div class="col-md-6 col-6">
                                         <div class="form-group">
-                                            <input type="text" id="nombre" class="form-control" name="nombre"
-                                                placeholder="Nombre de Estudiante" required>
+                                            <!-- Input de búsqueda -->
+                                            <input type="text" id="estudiante" class="form-control me-2" placeholder="Buscar estudiante" autocomplete="off">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    </div>
+                                    <div class="col-md-2 col-2">
+                                        <div class="form-group">
+                                            <input type="text" id="estudiante_id" class="form-control me-2" autocomplete="off" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-4">
+                                        <div class="form-group">
+                                            <!-- Dropdown de resultados -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Seleccionar
+                                                </button>
+                                                <ul class="dropdown-menu" id="listaEstudiantes" aria-labelledby="dropdownMenuButton">
+                                                    <!-- Aquí se insertarán los resultados -->
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
+                            <button type="submit" class="btn btn-primary me-1 mb-1" onclick="asistencia_traer()">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -34,16 +61,17 @@
                         </div>
                         <div class="modal-body">
                             <form class="form" method="POST">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <input type="text" id="nombre" class="form-control" name="nombre"
                                                 placeholder="Nombre de Estudiante" required>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Buscar</button>
                                     </div>
                                 </div>
                             </form>
+                            <button type="submit" class="btn btn-primary me-1 mb-1" onclick="asistencia_traer()">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -52,12 +80,37 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Calendario</h4>
+                            <h4>Resumen</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="container py-5">
-                                    <div id="calendar" class="bg-white"></div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <table class="table table-striped" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="contenido">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <!-- Calendar 1 - Bootstrap Brain Component -->
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 col-lg-12 col-xl-12">
+                                                <div class="card widget-card border-light shadow-sm">
+                                                    <div class="card-body p-4">
+                                                        <div id="bsb-calendar-1" class="fc fc-media-screen fc-direction-ltr fc-theme-bootstrap5 bsb-calendar-theme"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="divider">
@@ -72,5 +125,14 @@
 </div>
 {% block javascripts %}
     <script src="{% static 'js/asistencia_adm.js' %}"></script>
+    <script src="{% static 'vendors/simple-datatables/simple-datatables.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/bootstrap5@6.1.9/index.global.min.js"></script>
+    <script src="https://unpkg.com/bs-brain@2.0.4/components/calendars/calendar-1/assets/controller/calendar-1.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
 {% endblock javascripts %}
 {% endblock %}

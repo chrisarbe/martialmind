@@ -30,6 +30,8 @@ urlpatterns = [
     path('asistencia_estudiante/', views.estudiante_asistencia_traer, name='asistencia_estudiante'),
     path('asistencia/agregar/', views.asistencia_agregar, name='asistencia_agregar'),
     path('asistencia/adm/', views.asistencia_adm, name='asistencia_adm'),
+    path('asistencia/traer/', views.asistencia_traer, name='asistencia_traer'),
+    path('asistencia/estudiantes/traer/', views.estudiantes_traer, name='estudiantes_traer'),
     # Tipo de Documento
     path('tipo_documento/', views.tipo_documento, name='tipo_documento'),
     path('tipo_documento/agregar/', views.tipo_documento_agregar, name='tipo_documento_agregar'),

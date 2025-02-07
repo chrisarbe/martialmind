@@ -184,144 +184,148 @@
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
-                        <li class="sidebar-title">Menú</li>
-
-                        <li id="menu_dashboard" class="sidebar-item">
-                            <a href="{% url 'dashboard' %}" class='sidebar-link'>
-                                <i class="bi bi-grid-fill"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-collection-fill"></i>
-                                <span>Datos Maestros</span>
-                            </a>
-                            <ul id="menu_categorizacion" class="submenu">
+                        {% if request.user.is_authenticated %}
+                            <li class="sidebar-title">Menú</li>
+                            <li id="menu_dashboard" class="sidebar-item">
+                                <a href="{% url 'dashboard' %}" class='sidebar-link'>
+                                    <i class="bi bi-grid-fill"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            {% if request.user.is_superuser %}
                                 <li class="sidebar-item  has-sub">
                                     <a href="#" class='sidebar-link'>
-                                        <span>🏷️ Categorización</span>
+                                        <i class="bi bi-collection-fill"></i>
+                                        <span>Datos Maestros</span>
                                     </a>
-                                    <ul id="menu_categorizacion_2" class="submenu">
-                                        <li id="menu_tipo_documento" class="submenu-item">
-                                            <a href="{% url 'tipo_documento' %}">Tipo de Documento</a>
+                                    <ul id="menu_categorizacion" class="submenu">
+                                        <li class="sidebar-item  has-sub">
+                                            <a href="#" class='sidebar-link'>
+                                                <span>🏷️ Categorización</span>
+                                            </a>
+                                            <ul id="menu_categorizacion_2" class="submenu">
+                                                <li id="menu_tipo_documento" class="submenu-item">
+                                                    <a href="{% url 'tipo_documento' %}">Tipo de Documento</a>
+                                                </li>
+                                                <li id="menu_eps" class="submenu-item ">
+                                                    <a href="{% url 'eps' %}">EPS</a>
+                                                </li>
+                                                <li id="menu_profesion" class="submenu-item ">
+                                                    <a href="{% url 'profesion' %}">Profesiones</a>
+                                                </li>
+                                                <li id="menu_cinturon" class="submenu-item ">
+                                                    <a href="{% url 'cinturon' %}">Cinturones</a>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        <li id="menu_eps" class="submenu-item ">
-                                            <a href="{% url 'eps' %}">EPS</a>
+                                        <li class="sidebar-item  has-sub">
+                                            <a href="#" class='sidebar-link'>
+                                                <span>🌎 Geografía</span>
+                                            </a>
+                                            <ul id="menu_geografia" class="submenu ">
+                                                <li id="menu_pais" class="submenu-item ">
+                                                    <a href="{% url 'pais' %}">País</a>
+                                                </li>
+                                                <li id="menu_departamento" class="submenu-item ">
+                                                    <a href="{% url 'departamento' %}">Departamento</a>
+                                                </li>
+                                                <li id="menu_municipio" class="submenu-item ">
+                                                    <a href="{% url 'municipio' %}">Municipio</a>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        <li id="menu_profesion" class="submenu-item ">
-                                            <a href="{% url 'profesion' %}">Profesiones</a>
-                                        </li>
-                                        <li id="menu_cinturon" class="submenu-item ">
-                                            <a href="{% url 'cinturon' %}">Cinturones</a>
+                                        <li class="sidebar-item  has-sub">
+                                            <a href="#" class='sidebar-link'>
+                                                <span>🏫 Escuela</span>
+                                            </a>
+                                            <ul id="menu_escuela" class="submenu ">
+                                                <li id="menu_kwan" class="submenu-item ">
+                                                    <a href="{% url 'kwan' %}">Kwanes</a>
+                                                </li>
+                                                <li id="menu_academia" class="submenu-item ">
+                                                    <a href="{% url 'academia' %}">Academias</a>
+                                                </li>
+                                                <li id="menu_acudiente" class="submenu-item ">
+                                                    <a href="{% url 'acudiente' %}">Acudientes</a>
+                                                </li>
+                                                <li id="menu_fecha_pago" class="submenu-item ">
+                                                    <a href="{% url 'fecha_pago' %}">Fechas de Pago</a>
+                                                </li>
+                                                <li id="menu_estudiante" class="submenu-item ">
+                                                    <a href="{% url 'estudiante' %}">Estudiantes</a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="sidebar-item  has-sub">
-                                    <a href="#" class='sidebar-link'>
-                                        <span>🌎 Geografía</span>
-                                    </a>
-                                    <ul id="menu_geografia" class="submenu ">
-                                        <li id="menu_pais" class="submenu-item ">
-                                            <a href="{% url 'pais' %}">País</a>
+                            {% endif %}
+                            <li class="sidebar-title">Aplicaciones</li>
+
+                            <li class="sidebar-item  has-sub">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-briefcase-fill"></i>
+                                    <span>Administración</span>
+                                </a>
+                                {% if request.user.is_superuser %}
+                                    <ul id="menu_admin" class="submenu">
+                                        <li class="submenu-item" id="menu_asistencia_admin">
+                                            <a href="{% url 'asistencia_adm' %}">Asistencias</a>
                                         </li>
-                                        <li id="menu_departamento" class="submenu-item ">
-                                            <a href="{% url 'departamento' %}">Departamento</a>
+                                        <li class="submenu-item">
+                                            <a href="#">Monitorias</a>
                                         </li>
-                                        <li id="menu_municipio" class="submenu-item ">
-                                            <a href="{% url 'municipio' %}">Municipio</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="sidebar-item  has-sub">
-                                    <a href="#" class='sidebar-link'>
-                                        <span>🏫 Escuela</span>
-                                    </a>
-                                    <ul id="menu_escuela" class="submenu ">
-                                        <li id="menu_kwan" class="submenu-item ">
-                                            <a href="{% url 'kwan' %}">Kwanes</a>
-                                        </li>
-                                        <li id="menu_academia" class="submenu-item ">
-                                            <a href="{% url 'academia' %}">Academias</a>
-                                        </li>
-                                        <li id="menu_acudiente" class="submenu-item ">
-                                            <a href="{% url 'acudiente' %}">Acudientes</a>
-                                        </li>
-                                        <li id="menu_fecha_pago" class="submenu-item ">
-                                            <a href="{% url 'fecha_pago' %}">Fechas de Pago</a>
-                                        </li>
-                                        <li id="menu_estudiante" class="submenu-item ">
-                                            <a href="{% url 'estudiante' %}">Estudiantes</a>
+                                        <li class="submenu-item">
+                                            <a href="#">Servicios</a>
                                         </li>
                                     </ul>
+                                {% endif %}
+                            </li>
+
+                            <li id="menu_asistencia" class="sidebar-item">
+                                <a href="{% url 'asistencia' %}" class='sidebar-link'>
+                                    <i class="bi bi-calendar2-check-fill"></i>
+                                    <span>Asistencia</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-eyeglasses"></i>
+                                    <span>Monitorías</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-flag-fill"></i>
+                                    <span>Servicios</span>
+                                </a>
+                            </li>
+                            {% if request.user.is_superuser %}
+                                <li class="sidebar-title">Soporte</li>
+
+                                <li id="menu_documentacion" class="sidebar-item  ">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-life-preserver"></i>
+                                        <span>Documentación</span>
+                                    </a>
                                 </li>
-                            </ul>
-                        </li>
 
-                        <li class="sidebar-title">Aplicaciones</li>
-
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-briefcase-fill"></i>
-                                <span>Administración</span>
-                            </a>
-                            <ul id="menu_admin" class="submenu">
-                                <li class="submenu-item" id="menu_asistencia_admin">
-                                    <a href="{% url 'asistencia_adm' %}">Asistencias</a>
+                                <li class="sidebar-item">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-eyeglasses"></i>
+                                        <span>Mesa de Servicio</span>
+                                    </a>
                                 </li>
-                                <li class="submenu-item">
-                                    <a href="#">Monitorias</a>
+
+                                <li class="sidebar-item  ">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-cash"></i>
+                                        <span>Pagos</span>
+                                    </a>
                                 </li>
-                                <li class="submenu-item">
-                                    <a href="#">Servicios</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li id="menu_asistencia" class="sidebar-item">
-                            <a href="{% url 'asistencia' %}" class='sidebar-link'>
-                                <i class="bi bi-calendar2-check-fill"></i>
-                                <span>Asistencia</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-eyeglasses"></i>
-                                <span>Monitorías</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-flag-fill"></i>
-                                <span>Servicios</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-title">Soporte</li>
-
-                        <li id="menu_documentacion" class="sidebar-item  ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-life-preserver"></i>
-                                <span>Documentación</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-eyeglasses"></i>
-                                <span>Mesa de Servicio</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item  ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-cash"></i>
-                                <span>Pagos</span>
-                            </a>
-                        </li>
-
+                            {% endif %}
+                        {% endif %}
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

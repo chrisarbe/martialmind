@@ -82,7 +82,7 @@ function cinturon_traer(pk) {
             dato:pk
         },
         success: function (data) {
-            cont.innerHTML = '<img width="20%" src= "/static/images/faces/cinta_'+data[0].fields.nombre.toLowerCase().replace(/ /g, "_")+'.png" alt="Cinturón '+data[0].fields.nombre.toLowerCase().replace(/ /g, "_")+'">'
+            cont.innerHTML = '<img width="20%" src= "/static/images/faces/cinta_'+data[0].fields.nombre.toLowerCase().replace(/ /g, "_").normalize("NFD").replace(/[\u0300-\u036f]/g, "")+'.png" alt="Cinturón '+data[0].fields.nombre.toLowerCase().replace(/ /g, "_").normalize("NFD").replace(/[\u0300-\u036f]/g, "")+'">'
         }
     });
 }

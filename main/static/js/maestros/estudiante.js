@@ -64,10 +64,27 @@ function estudiante_ver(pk) {
             $("#fecha_pago_ver").val(data[0].fields.fecha_pago);
             $("#usuario_ver").val(data[0].fields.usuario);
             document.getElementById("aldia_ver").value = (data[0].fields.aldia);
+            cinturon_traer(data[0].fields.cinturon);
         }
     }).always(function() {
         $('#ver_estudiante').modal('show');
        });
+}
+
+function cinturon_traer(pk) {
+    const cont = document.getElementById("alerta_cintoron_ver");
+    const csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: '/cinturon/ver/',
+        type: 'POST',
+        headers:{"X-CSRFToken": csrftoken },
+        data: { 
+            dato:pk
+        },
+        success: function (data) {
+            cont.innerHTML = '<img width="20%" src= "/static/images/faces/cinta_'+data[0].fields.nombre.toLowerCase().replace(/ /g, "_")+'.png" alt="Cinturón '+data[0].fields.nombre.toLowerCase().replace(/ /g, "_")+'">'
+        }
+    });
 }
 
 function estudiante_editar(pk) {

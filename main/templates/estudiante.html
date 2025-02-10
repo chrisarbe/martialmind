@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/extra_style.css' %}">
 
 {% block content %}
 <div class="page-content">
@@ -260,6 +261,12 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        <div class="alert alert-light-secondary color-secondary">
+                                                            <div class="grade_student col-md-6 col-12" id="alerta_cintoron_ver">
+                                                            </div>
+                                                            <div class="col-md-6 col-12" id="alerta_edad_ver">
+                                                            </div>
+                                                        </div>
                                                         <form class="form">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-12">

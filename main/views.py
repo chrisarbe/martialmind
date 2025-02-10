@@ -1025,13 +1025,19 @@ def estudiante_editar(request):
                 documento.correo = request.POST['correo_editar']
                 documento.municipio = Municipio.objects.get(pk = request.POST['municipio_editar'])
                 documento.profesion = Profesion.objects.get(pk = request.POST['profesion_editar'])
-                documento.acudiente = Acudiente.objects.get(pk = request.POST['acudiente_editar'])
+                if request.POST['acudiente_editar'] == '':
+                    documento.acudiente = None
+                else:
+                    documento.acudiente = Acudiente.objects.get(pk = request.POST['acudiente_editar'])
                 documento.academia = Academia.objects.get(pk = request.POST['academia_editar'])
                 documento.cinturon = Cinturon.objects.get(pk = request.POST['cinturon_editar'])
                 documento.eps = EntidadPromotoraSalud.objects.get(pk = request.POST['eps_editar'])
                 documento.codigo_carnet = request.POST['codigo_carnet_editar']
                 documento.fecha_pago = FechaPago.objects.get(pk = request.POST['fecha_pago_editar'])
-                documento.usuario = User.objects.get(pk = request.POST['usuario_editar'])
+                if request.POST['usuario_editar'] == '':
+                    documento.usuario = None
+                else:
+                    documento.usuario = User.objects.get(pk = request.POST['usuario_editar'])
                 if request.POST['aldia_editar'] == 'true':
                     documento.aldia = True
                 elif request.POST['aldia_editar'] == 'false':

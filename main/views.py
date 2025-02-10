@@ -1010,7 +1010,7 @@ def estudiante_editar(request):
             })
     else:
         try:
-            documento_validar = Estudiante.objects.filter(documento=request.POST['documento_editar'])
+            documento_validar = Estudiante.objects.filter(documento=request.POST['documento_editar']).exclude(pk=request.POST['pk_editar'])
             if documento_validar.exists():
                 return JsonResponse({'message' : 'Ya existe un registro con el Documento de Estudiante: ' + str(request.POST['nombre_editar'] + ' ' + request.POST['apellido_editar']), 'status' : '0'}, status=200)
             else:

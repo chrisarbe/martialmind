@@ -281,6 +281,38 @@ function estudiante_agregar() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const fechaNacimientoInput = document.getElementById("fecha_nacimiento");
+    const otroInput = document.getElementById("acudiente");
+
+    fechaNacimientoInput.addEventListener("change", function () {
+        const fechaNacimiento = new Date(this.value);
+        
+        // Validar si la fecha es válida
+        if (isNaN(fechaNacimiento.getTime())) {
+            otroInput.setAttribute("disabled", "true");
+            return;
+        }
+
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const mesDiferencia = hoy.getMonth() - fechaNacimiento.getMonth();
+        const diaDiferencia = hoy.getDate() - fechaNacimiento.getDate();
+
+        // Ajuste de edad si aún no ha pasado el cumpleaños este año
+        if (mesDiferencia < 0 || (mesDiferencia === 0 && diaDiferencia < 0)) {
+            edad--;
+        }
+
+        // Habilitar o deshabilitar el otro input según la edad
+        if (edad >= 18) {
+            otroInput.removeAttribute("disabled");
+        } else {
+            otroInput.setAttribute("disabled", "true");
+        }
+    });
+});
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

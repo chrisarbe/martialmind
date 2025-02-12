@@ -4,6 +4,7 @@ from .models import *
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from datetime import datetime, date
+import pytz
 
 # Create your views here.
 def home(request):
@@ -49,6 +50,9 @@ def asistencia(request):
         return render(request, 'login.html')
     
 def asistencia_agregar(request):
+    # Definir la zona horaria de Colombia
+    zona_horaria_colombia = pytz.timezone("America/Bogota")
+    hora_colombia = datetime.now(zona_horaria_colombia)
     if request.method == 'GET':
         return render(request, 'asistencia.html', {
             'mesage':'Formulario Asistencia',
@@ -69,7 +73,7 @@ def asistencia_agregar(request):
                 else:
                     documento = Asistencia()
                     documento.fecha = date.today()
-                    documento.hora = datetime.now().strftime("%H:%M:%S")
+                    documento.hora = hora_colombia.strftime("%H:%M:%S")
                     documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
                     documento.save()
                     return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre, 'status' : '1'}, status=200)
@@ -93,13 +97,76 @@ def asistencia_adm(request):
     else:
         return render(request, 'login.html')
     
+def monitoria_adm(request):
+    if request.user.is_authenticated:
+        return render(request, 'monitoria_adm.html', {
+            'title':'Administración de Monitorias',
+            'subtitle':'Módulo de Administración de Monitorias'
+            })
+    else:
+        return render(request, 'login.html')
+    
 def asistencia_traer(request):
     item = Asistencia.objects.filter(estudiante=request.POST['dato'])
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
 
+def asistencia_traer_todos(request):
+    item = Asistencia.objects.all()
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
 def estudiantes_traer(request):
     item = Estudiante.objects.all()
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def monitoria(request):
+    if request.user.is_authenticated:
+        return render(request, 'monitoria.html', {
+            'title':'Monitoría',
+            'subtitle':'Módulo de Monitorías'
+            })
+    else:
+        return render(request, 'login.html')
+    
+def monitoria_agregar(request):
+    if request.method == 'GET':
+        return render(request, 'monitoria.html', {
+            'mesage':'Formulario Monitoria',
+            'code':'1'
+            })
+    else:
+        try:
+            item = Estudiante.objects.filter(codigo_carnet=request.POST['estudiante'])
+            if not item.exists():
+                return JsonResponse({'message' : 'No existe registro con el código de Estudiante: ' + str(request.POST['estudiante']), 'status' : '0'}, status=200)
+            else:
+                estudiante_id = item[0].id
+                documento_validar = Monitoria.objects.filter(fecha=date.today(), estudiante=item[0].id)
+                if documento_validar.exists():
+                    return JsonResponse({'message' : 'Ya existe un registro de Monitoria HOY para el Estudiante: ' + item[0].nombre}, status=200)
+                elif item[0].aldia == False:
+                    return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+                else:
+                    documento = Monitoria()
+                    documento.fecha = date.today()
+                    documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
+                    documento.save()
+                    return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre + ' a tu monitoría', 'status' : '1'}, status=200)
+        except ValueError:
+            return render(request, 'monitoria.html', {
+                'mesage':'Error',
+                'code':'3'
+                })
+        
+def monitoria_traer(request):
+    item = Monitoria.objects.filter(estudiante=request.POST['dato'])
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def monitoria_traer_todos(request):
+    item = Monitoria.objects.all()
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
 
@@ -927,7 +994,7 @@ def fecha_pago_borrar(request):
 #----- Estudiante -----#
 def estudiante(request):
     if request.user.is_authenticated:
-        lista = Estudiante.objects.all()
+        lista = Estudiante.objects.all().order_by('nombre')
         tipo_documentos = TipoDocumento.objects.all()
         municipios = Municipio.objects.all()
         profesiones = Profesion.objects.all()

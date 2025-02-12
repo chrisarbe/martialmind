@@ -107,10 +107,29 @@ class Estudiante(models.Model):
     def __str__(self):
         return self.nombre
     
+    def monitorias_requeridas(self):
+        # Cinturones que deben hacer 30 monitorías
+        cinturones_30 = ["Verde", "Azul", "Violeta"]
+        # Cinturones que deben hacer 60 monitorías
+        cinturones_60 = ["Rojo", "Rojo Café", "Café", "Café Negro"]
+
+        if self.cinturon.nombre in cinturones_30:
+            return 30
+        elif self.cinturon.nombre in cinturones_60:
+            return 60
+        return 0
+    
 class Asistencia(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     fecha=models.DateField()
     hora=models.TimeField()
+
+    def __str__(self):
+        return self.estudiante.nombre
+
+class Monitoria(models.Model):
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    fecha=models.DateField()
 
     def __str__(self):
         return self.estudiante.nombre

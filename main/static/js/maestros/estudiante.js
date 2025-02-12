@@ -301,6 +301,8 @@ function estudiante_agregar() {
 document.addEventListener("DOMContentLoaded", function () {
     const fechaNacimientoInput = document.getElementById("fecha_nacimiento");
     const otroInput = document.getElementById("acudiente");
+    const fechaNacimientoInput2 = document.getElementById("fecha_nacimiento_editar");
+    const otroInput2 = document.getElementById("acudiente_editar");
 
     fechaNacimientoInput.addEventListener("change", function () {
         const fechaNacimiento = new Date(this.value);
@@ -323,12 +325,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Habilitar o deshabilitar el otro input según la edad
         if (edad >= 18) {
-            otroInput.removeAttribute("disabled");
-        } else {
             otroInput.setAttribute("disabled", "true");
+        } else {
+            otroInput.removeAttribute("disabled");
+        }
+    });
+
+    fechaNacimientoInput2.addEventListener("change", function () {
+        const fechaNacimiento2 = new Date(this.value);
+        
+        // Validar si la fecha es válida
+        if (isNaN(fechaNacimiento2.getTime())) {
+            otroInput2.setAttribute("disabled", "true");
+            return;
+        }
+
+        const hoy2 = new Date();
+        let edad2 = hoy2.getFullYear() - fechaNacimiento2.getFullYear();
+        const mesDiferencia2 = hoy2.getMonth() - fechaNacimiento2.getMonth();
+        const diaDiferencia2 = hoy2.getDate() - fechaNacimiento2.getDate();
+
+        // Ajuste de edad si aún no ha pasado el cumpleaños este año
+        if (mesDiferencia2 < 0 || (mesDiferencia2 === 0 && diaDiferencia2 < 0)) {
+            edad2--;
+        }
+
+        // Habilitar o deshabilitar el otro input según la edad
+        if (edad2 >= 18) {
+            otroInput2.setAttribute("disabled", "true");
+        } else {
+            otroInput2.removeAttribute("disabled");
         }
     });
 });
+
 
 function getCookie(name) {
     let cookieValue = null;

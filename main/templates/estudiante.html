@@ -545,7 +545,7 @@
                                                                 <div class="col-md-6 mb-12">
                                                                     <label for="acudiente-columna">Acudiente</label>
                                                                     <fieldset class="form-group">
-                                                                        <select class="form-select" id="acudiente_editar" name="acudiente_editar">
+                                                                        <select class="form-select" id="acudiente_editar" name="acudiente_editar" disabled>
                                                                             <option value="">Sin Acudiente</option>
                                                                             {% for x in acudientes %}
                                                                             <option value="{{ x.pk }}">{{ x.nombre }}</option>

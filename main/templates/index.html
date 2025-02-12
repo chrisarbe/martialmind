@@ -273,8 +273,8 @@
                                         <li class="submenu-item" id="menu_asistencia_admin">
                                             <a href="{% url 'asistencia_adm' %}">Asistencias</a>
                                         </li>
-                                        <li class="submenu-item">
-                                            <a href="#">Monitorias</a>
+                                        <li class="submenu-item" id="menu_monitoria_admin">
+                                            <a href="{% url 'monitoria_adm' %}">Monitorias</a>
                                         </li>
                                         <li class="submenu-item">
                                             <a href="#">Servicios</a>
@@ -290,8 +290,8 @@
                                 </a>
                             </li>
 
-                            <li class="sidebar-item">
-                                <a href="#" class='sidebar-link'>
+                            <li id="menu_monitoria" class="sidebar-item">
+                                <a href="{% url 'monitoria' %}" class='sidebar-link'>
                                     <i class="bi bi-eyeglasses"></i>
                                     <span>Monitorías</span>
                                 </a>

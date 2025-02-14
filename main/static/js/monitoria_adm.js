@@ -51,6 +51,9 @@ function monitoria_traer() {
             success: function (data) {
                 console.log(data)
                 var cont = document.getElementById("contenido");
+                cont2 = document.getElementById("progress-table");
+                cont2.innerHTML = "";
+                cont2.innerHTML = "<div class='alert alert-info'><h4 class='alert-heading'>Info</h4><p>Se listaron todas las monitorias ordenadas por fecha</p></div>";
                 cont.innerHTML = "";
                 for (let i = 0; i < data.length; i++) {
                     let estudianteID = data[i].fields.estudiante; // ID del estudiante
@@ -72,13 +75,14 @@ function monitoria_traer() {
             },
             success: function (data) {
                 console.log(data)
+                porcentaje = ((data.monitorias_realizadas / data.monitorias_necesarias) * 100).toFixed(2);
                 var cont = document.getElementById("contenido");
+                var cont3 = document.getElementById("progress-table");
+                cont3.innerHTML = "";
+                cont3.innerHTML = "<tr><td class='col-3'>"+data.monitorias_realizadas + " de " + data.monitorias_necesarias + " monitorias realizadas</td><td class='col-6'><div class='progress progress-info progress-lg'><div class='progress-bar' role='progressbar' style='width:"+porcentaje+"%' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div></div></tr>";
                 cont.innerHTML = "";
-                for (let i = 0; i < data.length; i++) {
-                    let estudianteID = data[i].fields.estudiante; // ID del estudiante
-                    let estudianteObj = estudiantes.find(est => est.id === estudianteID); // Buscar en la lista
-                    let nombreEstudiante = estudianteObj ? estudianteObj.nombre : "Desconocido"; // Si no se encuentra, mostrar "Desconocido"
-                    cont.innerHTML += "<tr><td>"+nombreEstudiante+"</td><td>"+data[i].fields.fecha+"</td></tr>";
+                for (let i = 0; i < data.monitorias.length; i++) {
+                    cont.innerHTML += "<tr><td>"+data.estudiante+"</td><td>"+data.monitorias[i].fecha+"</td></tr>";
                 }
                 $("#estudiante").val("");
                 $("#estudiante_id").val("");

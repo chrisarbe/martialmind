@@ -161,13 +161,27 @@ def monitoria_agregar(request):
                 })
         
 def monitoria_traer(request):
-    item = Monitoria.objects.filter(estudiante=request.POST['dato'])
+    monitorias_realizadas = Monitoria.objects.filter(estudiante=request.POST['dato']).count()
+    item = Monitoria.objects.filter(estudiante=request.POST['dato']).values("id", "fecha")
+    estudiante = Estudiante.objects.get(pk=request.POST['dato'])
+    monitorias_necesarias = estudiante.monitorias_requeridas()
+    contexto = {
+        'estudiante': estudiante.nombre,
+        'monitorias_realizadas': monitorias_realizadas,
+        'monitorias_necesarias': monitorias_necesarias,
+        'monitorias': list(item),
+    }
+    return JsonResponse(contexto)
+
+def monitoria_traer_todos(request):
+    item = Monitoria.objects.all().order_by('fecha')
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
 
-def monitoria_traer_todos(request):
-    item = Monitoria.objects.all()
-    response = serializers.serialize("json", item)
+def monitorias_estudiante(request):
+    estudiante = Estudiante.objects.get(codigo_carnet=request.POST['dato'])
+    monitorias_necesarias = estudiante.monitorias_requeridas()
+    response = serializers.serialize("json", monitorias_necesarias)
     return HttpResponse(response, content_type='application/json')
 
 

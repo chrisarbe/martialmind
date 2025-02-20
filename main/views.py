@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from datetime import datetime, date
 import pytz
+from django.middleware.csrf import get_token
 
 # Create your views here.
 def home(request):
@@ -12,6 +13,9 @@ def home(request):
         return render(request, 'index.html')
     else:
         return render(request, 'login.html')
+
+def refresh_csrf(request):
+    return JsonResponse({'csrfToken': get_token(request)})
     
 def dashboard(request):
     if request.user.is_authenticated:
@@ -72,7 +76,7 @@ def asistencia_agregar(request):
                     return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
                 else:
                     documento = Asistencia()
-                    documento.fecha = date.today()
+                    documento.fecha = hora_colombia.strftime("%Y-%m-%d")
                     documento.hora = hora_colombia.strftime("%H:%M:%S")
                     documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
                     documento.save()
@@ -112,7 +116,7 @@ def asistencia_traer(request):
     return HttpResponse(response, content_type='application/json')
 
 def asistencia_traer_todos(request):
-    item = Asistencia.objects.all()
+    item = Asistencia.objects.all().order_by('fecha', 'hora')
     response = serializers.serialize("json", item)
     return HttpResponse(response, content_type='application/json')
 
@@ -131,6 +135,8 @@ def monitoria(request):
         return render(request, 'login.html')
     
 def monitoria_agregar(request):
+    zona_horaria_colombia = pytz.timezone("America/Bogota")
+    hora_colombia = datetime.now(zona_horaria_colombia)
     if request.method == 'GET':
         return render(request, 'monitoria.html', {
             'mesage':'Formulario Monitoria',
@@ -150,7 +156,8 @@ def monitoria_agregar(request):
                     return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
                 else:
                     documento = Monitoria()
-                    documento.fecha = date.today()
+                    documento.fecha = hora_colombia.strftime("%Y-%m-%d")
+                    documento.horas_autorizadas = request.POST['horas']
                     documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
                     documento.save()
                     return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre + ' a tu monitoría', 'status' : '1'}, status=200)
@@ -184,6 +191,39 @@ def monitorias_estudiante(request):
     response = serializers.serialize("json", monitorias_necesarias)
     return HttpResponse(response, content_type='application/json')
 
+def pagos_adm(request):
+    if request.user.is_authenticated:
+        lista = FechaPago.objects.all()
+        return render(request, 'pagos_adm.html', {
+            'title':'Administración de Pagos',
+            'subtitle':'Módulo de Administración de Pagos',
+            'lista':lista
+            })
+    else:
+        return render(request, 'login.html')
+
+def pagos_traer(request):
+    item = Estudiante.objects.filter(fecha_pago=request.POST['dato']).order_by('nombre')
+    response = serializers.serialize("json", item)
+    return HttpResponse(response, content_type='application/json')
+
+def pagos_actualizar(request):
+    if request.method == 'GET':
+        return render(request, 'pagos_adm.html', {
+            'mesage':'Formulario Pagos Al dia',
+            'code':'1'
+            })
+    else:
+        try:
+            documento = Estudiante.objects.get(pk=request.POST['estudiante'])
+            if request.POST['aldia'] == 'true':
+                documento.aldia = True
+            elif request.POST['aldia'] == 'false':
+                documento.aldia = False
+            documento.save()
+            return JsonResponse({'message' : 'Pago Actualizado con exito', 'status' : '1'}, status=200)
+        except ValueError:
+            return JsonResponse({'message' : 'Error', 'status' : '2'}, status=200)
 
 def login_user(request):
     if request.method == 'GET':

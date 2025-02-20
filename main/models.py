@@ -130,6 +130,7 @@ class Asistencia(models.Model):
 class Monitoria(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     fecha=models.DateField()
+    horas_autorizadas=models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.estudiante.nombre

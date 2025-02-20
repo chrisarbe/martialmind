@@ -109,3 +109,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function refreshCSRF() {
+    fetch('/refresh-csrf/', {
+        method: 'GET',
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.querySelector('[name=csrfmiddlewaretoken]').value = data.csrfToken;
+    });
+}
+setInterval(refreshCSRF, 10 * 60 * 1000);

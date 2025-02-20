@@ -270,6 +270,9 @@
                                 {% endif %}
                                 {% if request.user.is_superuser %}
                                     <ul id="menu_admin" class="submenu">
+                                        <li class="submenu-item" id="menu_pagos_admin">
+                                            <a href="{% url 'pagos_adm' %}">Pagos</a>
+                                        </li>
                                         <li class="submenu-item" id="menu_asistencia_admin">
                                             <a href="{% url 'asistencia_adm' %}">Asistencias</a>
                                         </li>

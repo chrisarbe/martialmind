@@ -10,45 +10,76 @@ function detectarCaracteres() {
     const inputField = document.getElementById('codigo');  // Obtén el campo de entrada
     if (inputField.value.length === 8) {  // Verifica si tiene 8 caracteres
         console.log(inputField.value)
-        monitoria_agregar(inputField.value);  // Ejecuta la función si tiene 8 caracteres
+        //monitoria_agregar(inputField.value);  // Ejecuta la función si tiene 8 caracteres
+        document.getElementById('horas').focus();
     }
 }
 
-function monitoria_agregar(codigo_carnet) {
+async function monitoria_agregar() {
     const csrftoken = getCookie('csrftoken'); 
-    $.ajax({
-        url: '/monitoria/agregar/',
-        type: 'POST',
-        headers:{"X-CSRFToken": csrftoken },
-        data: { 
-            estudiante:codigo_carnet
+    const { value: password } = await Swal.fire({
+        title: 'Ingrese Código de Autorización',
+        input: 'password',
+        inputPlaceholder: 'Ingrese Código de Autorización',
+        inputAttributes: {
+        maxlength: 8,
+        autocapitalize: 'off',
+        autocorrect: 'off'
         },
-        success: function (data) {
-            console.log(data)
-            if(data.status != "1") {
-                Swal.fire({
-                    icon: "error",
-                    title: data.message,
-                    timer: 5000,  // 5000 milisegundos = 5 segundos
-                    showConfirmButton: false,  // Oculta el botón de "OK"
-                    willClose: () => {
-                        $("#codigo").val("");
-                    }
-                });
-            }else{
-                Swal.fire({
-                    icon: "success",
-                    title: data.message,
-                    timer: 5000,  // 5000 milisegundos = 5 segundos
-                    confirmButtonColor: '#81D4FA',
-                    showConfirmButton: false,  // Oculta el botón de "OK"
-                    willClose: () => {
-                        $("#codigo").val("");
-                    }
-                });
+        showCancelButton: true,
+        confirmButtonText: 'Autorizar',
+    })
+    if (password == "98632170") {
+        $.ajax({
+            url: '/monitoria/agregar/',
+            type: 'POST',
+            headers:{"X-CSRFToken": csrftoken },
+            data: { 
+                estudiante: $("#codigo").val(),
+                horas: $("#horas").val()
+            },
+            success: function (data) {
+                console.log(data)
+                if(data.status != "1") {
+                    Swal.fire({
+                        icon: "error",
+                        title: data.message,
+                        timer: 5000,  // 5000 milisegundos = 5 segundos
+                        showConfirmButton: false,  // Oculta el botón de "OK"
+                        willClose: () => {
+                            $("#codigo").val("");
+                            $("#horas").val("");
+                            document.getElementById('codigo').focus();
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        icon: "success",
+                        title: data.message,
+                        timer: 5000,  // 5000 milisegundos = 5 segundos
+                        confirmButtonColor: '#81D4FA',
+                        showConfirmButton: false,  // Oculta el botón de "OK"
+                        willClose: () => {
+                            $("#codigo").val("");
+                            $("#horas").val("");
+                            document.getElementById('codigo').focus();
+                        }
+                    });
+                }
             }
-        }
-    });
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Código de Autorización Incorrecto",
+            timer: 5000,  // 5000 milisegundos = 5 segundos
+            showConfirmButton: false,  // Oculta el botón de "OK"
+            willClose: () => {
+                $("#codigo").val("");
+                $("#horas").val("");
+            }
+        });
+    }
 }
 
 function getCookie(name) {

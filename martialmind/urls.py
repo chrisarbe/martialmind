@@ -21,6 +21,7 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
+    path('refresh-csrf/', views.refresh_csrf, name='refresh-csrf'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/', views.profile, name='profile'),
     path('estudiante_profile/ver/', views.profile_user, name='estudiante_profile'),
@@ -39,6 +40,9 @@ urlpatterns = [
     path('monitoria/traer/', views.monitoria_traer, name='monitoria_traer'),
     path('monitoria/traer/todos/', views.monitoria_traer_todos, name='monitoria_traer_todos'),
     path('monitoria/estudiantes/traer/', views.estudiantes_traer, name='estudiantes_traer'),
+    path('pagos/adm/', views.pagos_adm, name='pagos_adm'),
+    path('pagos/traer/', views.pagos_traer, name='pagos_traer'),
+    path('pagos/actualizar/', views.pagos_actualizar, name='pagos_actualizar'),
     # Tipo de Documento
     path('tipo_documento/', views.tipo_documento, name='tipo_documento'),
     path('tipo_documento/agregar/', views.tipo_documento_agregar, name='tipo_documento_agregar'),

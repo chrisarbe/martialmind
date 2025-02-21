@@ -7,6 +7,7 @@ from django.core import serializers
 from datetime import datetime, date
 from django.db.models import Sum, Count
 import pytz
+from django.utils.timezone import now
 from django.middleware.csrf import get_token
 from django.db.models.functions import ExtractMonth
 
@@ -151,6 +152,21 @@ def asistencias_por_mes(request):
         datos[asistencia['mes']] = asistencia['total']  # Asigna los valores reales
 
     return JsonResponse(datos)
+
+def asistencias_por_fecha(request):
+    """Retorna el número de asistencias agrupadas por fecha en el mes actual"""
+    hoy = now().date()
+    mes_actual = hoy.month
+    año_actual = hoy.year
+
+    asistencias = (
+        Asistencia.objects.filter(fecha__year=año_actual, fecha__month=mes_actual)
+        .values("fecha")
+        .annotate(total_asistencias=Count("id"))
+        .order_by("fecha")
+    )
+
+    return JsonResponse(list(asistencias), safe=False)
     
 def monitoria_adm(request):
     if request.user.is_authenticated:

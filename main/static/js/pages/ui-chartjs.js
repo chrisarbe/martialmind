@@ -377,78 +377,93 @@ var gradient2 = line.createLinearGradient(0, 0, 0, 400);
 gradient2.addColorStop(0, 'rgba(255, 91, 92,1)');
 gradient2.addColorStop(1, 'rgba(265, 177, 249,0)');
 
-var myline = new Chart(line, {
-    type: 'line',
-    data: {
-        labels: ['16-07-2018', '17-07-2018', '18-07-2018', '19-07-2018', '20-07-2018', '21-07-2018', '22-07-2018', '23-07-2018', '24-07-2018', '25-07-2018'],
-        datasets: [{
-            label: 'Balance',
-            data: [50, 25, 61, 50, 72, 52, 60, 41, 30, 45],
-            backgroundColor: "rgba(50, 69, 209,.6)",
-            borderWidth: 3,
-            borderColor: 'rgba(63,82,227,1)',
-            pointBorderWidth: 0,
-            pointBorderColor: 'transparent',
-            pointRadius: 3,
-            pointBackgroundColor: 'transparent',
-            pointHoverBackgroundColor: 'rgba(63,82,227,1)',
-        }, {
-            label: 'Balance',
-            data: [20, 35, 45, 75, 37, 86, 45, 65, 25, 53],
-            backgroundColor: "rgba(253, 183, 90,.6)",
-            borderWidth: 3,
-                borderColor: 'rgba(253, 183, 90,.6)',
-            pointBorderWidth: 0,
-            pointBorderColor: 'transparent',
-            pointRadius: 3,
-            pointBackgroundColor: 'transparent',
-            pointHoverBackgroundColor: 'rgba(63,82,227,1)',
-        }]
-    },
-    options: {
-        responsive: true,
-        layout: {
-            padding: {
-                top: 10,
-            },
-        },
-        tooltips: {
-            intersect: false,
-            titleFontFamily: 'Helvetica',
-            titleMarginBottom: 10,
-            xPadding: 10,
-            yPadding: 10,
-            cornerRadius: 3,
-        },
-        legend: {
-            display: true,
-        },
-        scales: {
-            yAxes: [
-                {
-                    gridLines: {
-                        display: true,
-                        drawBorder: true,
+$(document).ready(obtenerAsistenciasDia);
+function obtenerAsistenciasDia (){
+    fetch("/asistencias/dias/traer/")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error en la respuesta de la API");
+            }
+            return response.json();
+        })
+        .then(data => {
+            var labels = [];
+            var asistenciasData = [];
+            data.forEach(item => {
+                labels.push(item.fecha); // Fecha en formato "YYYY-MM-DD"
+                asistenciasData.push(parseInt(item.total_asistencias, 10)); // Convertir a número
+            });
+            var myline = new Chart(line, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Balance del Mes',
+                        data: asistenciasData,
+                        backgroundColor: "rgba(50, 69, 209,.6)",
+                        borderWidth: 3,
+                        borderColor: 'rgba(63,82,227,1)',
+                        pointBorderWidth: 0,
+                        pointBorderColor: 'transparent',
+                        pointRadius: 3,
+                        pointBackgroundColor: 'transparent',
+                        pointHoverBackgroundColor: 'rgba(63,82,227,1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            top: 10,
+                        },
                     },
-                    ticks: {
+                    tooltips: {
+                        intersect: false,
+                        titleFontFamily: 'Helvetica',
+                        titleMarginBottom: 10,
+                        xPadding: 10,
+                        yPadding: 10,
+                        cornerRadius: 3,
+                    },
+                    legend: {
                         display: true,
                     },
-                },
-            ],
-            xAxes: [
-                {
-                    gridLines: {
-                        drawBorder: false,
-                        display: false,
+                    scales: {
+                        yAxes: [
+                            {
+                                gridLines: {
+                                    display: true,
+                                    drawBorder: true,
+                                },
+                                ticks: {
+                                    display: true,
+                                },
+                            },
+                        ],
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    drawBorder: false,
+                                    display: false,
+                                },
+                                ticks: {
+                                    display: false,
+                                },
+                            },
+                        ],
                     },
-                    ticks: {
-                        display: false,
-                    },
-                },
-            ],
-        },
-    }
-});
+                }
+            });
+
+            // Mostrar los datos en consola (para depuración)
+            console.log("Asistencias por fecha:", asistenciasPorFecha);
+
+            // Aquí puedes utilizar los datos (graficar, mostrar en una tabla, etc.)
+        })
+        .catch(error => {
+            console.error("Error al obtener las asistencias:", error);
+        });
+}
 
 // let ctx1 = document.getElementById("canvas1").getContext("2d");
 // let ctx2 = document.getElementById("canvas2").getContext("2d");

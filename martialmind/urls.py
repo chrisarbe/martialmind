@@ -35,6 +35,7 @@ urlpatterns = [
     path('asistencia/traer/todos/', views.asistencia_traer_todos, name='asistencia_traer_todos'),
     path('asistencia/estudiantes/traer/', views.estudiantes_traer, name='estudiantes_traer'),
     path('asistencia/meses/traer/', views.asistencias_por_mes, name='meses_traer'),
+    path('asistencias/dias/traer/', views.asistencias_por_fecha, name='dias_traer'),
     path('monitoria/', views.monitoria, name='monitoria'),
     path('monitoria/agregar/', views.monitoria_agregar, name='monitoria_agregar'),
     path('monitoria/adm/', views.monitoria_adm, name='monitoria_adm'),

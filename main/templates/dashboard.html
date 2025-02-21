@@ -1,10 +1,11 @@
 {% extends 'index.html' %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'assets/vendors/chartjs/Chart.min.css' %}">
 
 {% block content %}
 <div class="page-content">
     <section class="row">
-        <div class="col-8 col-lg-8">
+        <div class="col-8 col-lg-8 col-sm-12">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
@@ -35,29 +36,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Estudiantes que no estan al día</h4>
+                            <h4 class="card-title">Asistencias Mensuales</h4>
                         </div>
                         <div class="card-body">
-                            <table class="table table-striped" id="table1">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Apellido</th>
-                                        <th>Cinturón</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for x in lista %}
-                                        {% if not x.aldia %}
-                                            <tr>
-                                                <td>{{ x.nombre }}</td>
-                                                <td>{{ x.apellido }}</td>
-                                                <td>{{ x.cinturon }}</td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <canvas id="bar"></canvas>
                         </div>
                     </div>
                 </div>
@@ -177,10 +159,10 @@
                 </div>
             </div>-->
         </div>
-        <div class="col-4 col-lg-4">
+        <div class="col-4 col-lg-4 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>Academias</h4>
+                    <h4>Academias del Kwan</h4>
                 </div>
                 <div class="card-content pb-4">
                     <a href="#">
@@ -238,9 +220,6 @@
                             </div>
                         </div>
                     </a>
-                    <div class="px-4">
-                        <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>Estadísticas</button>
-                    </div>
                 </div>
             </div>
             <!--<div class="card">
@@ -256,5 +235,7 @@
 </div>
 {% block javascripts %}
     <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'vendors/chartjs/Chart.min.js' %}"></script>
+    <script src="{% static 'js/pages/ui-chartjs.js' %}"></script>
 {% endblock javascripts %}
 {% endblock %}

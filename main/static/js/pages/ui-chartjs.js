@@ -284,57 +284,90 @@ var config4 = {
         },
     },
 };
+//----------------------------------------------------------
+var year = new Date().getFullYear();
+var ene = 0;
+var feb = 0;
+var mar = 0;
+var abr = 0;
+var may = 0;
+var jun = 0;
+var jul = 0;
+var ago = 0;
+var sep = 0;
+var oct = 0;
+var nov = 0;
+var dic = 0;
+function obtenerAsistenciasPorMes(){
+    fetch('/asistencia/meses/traer/')  // Ajusta la URL según tu configuración
+    .then(response => response.json()) // Convertir la respuesta en JSON
+    .then(data => {
+        console.log("Asistencias por mes:", data);
 
+        // Guardar valores en variables
+        ene = data[1] || 0;
+        feb = data[2] || 0;
+        mar = data[3] || 0;
+        abr = data[4] || 0;
+        may = data[5] || 0;
+        jun = data[6] || 0;
+        jul = data[7] || 0;
+        ago = data[8] || 0;
+        sep = data[9] || 0;
+        oct = data[10] || 0;
+        nov = data[11] || 0;
+        dic = data[12] || 0;
 
-var ctxBar = document.getElementById("bar").getContext("2d");
-var myBar = new Chart(ctxBar, {
-    type: 'bar',
-    data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-        datasets: [{
-            label: 'Students',
-            backgroundColor: [chartColors.grey, chartColors.grey, chartColors.grey, chartColors.grey, chartColors.info, chartColors.blue, chartColors.grey],
-            data: [
-                5,
-                10,
-                30,
-                40,
-                35,
-                55,
-                15,
-            ]
-        }]
-    },
-    options: {
-        responsive: true,
-        barRoundness: 1,
-        title: {
-            display: true,
-            text: "Students in 2020"
-        },
-        legend: {
-            display: false
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 40 + 20,
-                    padding: 10,
+        // Puedes usar estos valores para gráficos, reportes, etc.
+        console.log(`Enero: ${ene}, Febrero: ${feb}, Marzo: ${mar}, Abril: ${abr}, Mayo: ${may}, Junio: ${jun}, Julio: ${jul}, Agosto: ${ago}, Septiembre: ${sep}, Octubre: ${oct}, Noviembre: ${nov}, Diciembre: ${dic}`);
+        var ctxBar = document.getElementById("bar").getContext("2d");
+        var myBar = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                datasets: [{
+                    label: 'Estudiantes',
+                    backgroundColor: [chartColors.grey, chartColors.grey, chartColors.grey, chartColors.grey, chartColors.info, chartColors.blue, chartColors.grey],
+                    data: [
+                        ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                barRoundness: 1,
+                title: {
+                    display: true,
+                    text: "Estudiantes año " + year,
                 },
-                gridLines: {
-                    drawBorder: false,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: 40 + 20,
+                            padding: 10,
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    }]
                 }
-            }],
-            xAxes: [{
-                gridLines: {
-                    display: false,
-                    drawBorder: false
-                }
-            }]
-        }
-    }
-});
+            }
+        });
+    })
+    .catch(error => console.error("Error al obtener asistencias:", error));
+}
+$(document).ready(obtenerAsistenciasPorMes);
+
 var line = document.getElementById("line").getContext("2d");
 var gradient = line.createLinearGradient(0, 0, 0, 400);
 gradient.addColorStop(0, 'rgba(50, 69, 209,1)');

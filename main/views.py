@@ -5,23 +5,36 @@ from .models import *
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from datetime import datetime, date
-from django.db.models import Sum
+from django.db.models import Sum, Count
 import pytz
 from django.middleware.csrf import get_token
+from django.db.models.functions import ExtractMonth
 
 # Create your views here.
 
-# Lista de frases de bienvenida
 def generar_mensaje_bienvenida(nombre):
-    """Genera un mensaje de bienvenida aleatorio con el nombre del estudiante."""
+    """Genera un mensaje de bienvenida aleatorio con el nombre del estudiante e iconos motivadores."""
     frases_bienvenida = [
-        "¡Hola, Bienvenid@ {}! Que tengas un gran día. \nDios le bendiga.\n🙏",
-        "¡Genial verte de nuevo, {}! Disfruta tu entrenamiento. \nDios le bendiga.\n🙏",
-        "¡Bienvenid@, {}! A dar lo mejor de ti hoy. \nDios le bendiga.\n🙏",
-        "¡Hola, {}! Vamos a entrenar con energía. \nDios le bendiga.\n🙏",
-        "¡Qué bueno verte, {}! Hoy es un gran día para aprender. \nDios le bendiga.\n🙏",
-        "¡Adelante, {}! Tu progreso empieza aquí. \nDios le bendiga.\n🙏",
-        "¡Hola, {}! Tu constancia es inspiradora. \nDios le bendiga.\n🙏"
+        "¡Hola, Bienvenid@ {}! Que tengas un gran día. 🌞✨\nDios te bendiga. 🙏",
+        "¡Genial verte de nuevo, {}! Disfruta tu entrenamiento. 💪🔥\nDios te bendiga. 🙏",
+        "¡Bienvenid@, {}! A dar lo mejor de ti hoy. 💯🚀\nDios te bendiga. 🙏",
+        "¡Hola, {}! Vamos a entrenar con energía. ⚔️🏆\nDios te bendiga. 🙏",
+        "¡Qué bueno verte, {}! Hoy es un gran día para aprender y crecer. 🌱🎓\nDios te bendiga. 🙏",
+        "¡Adelante, {}! Tu progreso empieza aquí. 💥🔥\nDios te bendiga. 🙏",
+        "¡Hola, {}! Tu constancia es inspiradora. Sigue avanzando. 💪✨\nDios te bendiga. 🙏"
+    ]
+    return random.choice(frases_bienvenida).format(nombre)
+
+def generar_mensaje_bienvenida_monitoria(nombre):
+    """Genera un mensaje de bienvenida aleatorio para un estudiante que va a realizar una monitoría o enseñanza."""
+    frases_bienvenida = [
+        "¡Hola, {}! Hoy tienes la oportunidad de guiar a otro estudiante. ¡Hazlo con pasión y paciencia! 🙌",
+        "¡Bienvenid@, {}! Enseñar es aprender dos veces. Disfruta esta experiencia. 📚✨",
+        "¡Hola, {}! Compartir tu conocimiento hace crecer a todos. ¡Éxito en tu monitoría! 💡",
+        "¡Genial verte, {}! Tu dedicación inspira a los demás. ¡Que sea una gran sesión! 🎯",
+        "¡{}! Cada enseñanza que brindas deja huella en alguien. ¡Aprovecha esta oportunidad! 🔥",
+        "¡Hola, {}! Hoy tienes la oportunidad de marcar la diferencia en el aprendizaje de alguien. ¡Mucho ánimo! 💪",
+        "¡{}! La mejor forma de aprender es enseñando. ¡Disfruta la monitoría y sigue creciendo! 🚀"
     ]
     return random.choice(frases_bienvenida).format(nombre)
 
@@ -118,6 +131,26 @@ def asistencia_adm(request):
             })
     else:
         return render(request, 'login.html')
+
+def asistencias_por_mes(request):
+    """Devuelve el número de asistencias por mes del año actual en formato JSON"""
+    año_actual = datetime.now().year
+
+    # Obtener el conteo de asistencias agrupadas por mes
+    asistencias = (
+        Asistencia.objects.filter(fecha__year=año_actual)
+        .annotate(mes=ExtractMonth('fecha'))
+        .values('mes')
+        .annotate(total=Count('id'))
+        .order_by('mes')
+    )
+
+    # Estructurar los datos con todos los meses representados
+    datos = {mes: 0 for mes in range(1, 13)}  # Inicializa todos los meses en 0
+    for asistencia in asistencias:
+        datos[asistencia['mes']] = asistencia['total']  # Asigna los valores reales
+
+    return JsonResponse(datos)
     
 def monitoria_adm(request):
     if request.user.is_authenticated:
@@ -167,23 +200,27 @@ def monitoria_agregar(request):
                 return JsonResponse({'message' : 'No existe registro con el código de Estudiante: ' + str(request.POST['estudiante']), 'status' : '0'}, status=200)
             else:
                 estudiante_id = item[0].id
-                documento_validar = Monitoria.objects.filter(fecha=date.today(), estudiante=item[0].id)
-                if documento_validar.exists():
-                    return JsonResponse({'message' : 'Ya existe un registro de Monitoria HOY para el Estudiante: ' + item[0].nombre}, status=200)
-                elif item[0].aldia == False:
-                    return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+                estudiante = Estudiante.objects.get(pk=estudiante_id)
+                monitorias_necesarias = estudiante.monitorias_requeridas()
+                if monitorias_necesarias != 0:
+                    documento_validar = Monitoria.objects.filter(fecha=date.today(), estudiante=item[0].id)
+                    if documento_validar.exists():
+                        return JsonResponse({'message' : 'Ya existe un registro de Monitoria HOY para el Estudiante: ' + item[0].nombre}, status=200)
+                    elif item[0].aldia == False:
+                        return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no está al día con el pago', 'status' : '0'}, status=200)
+                    else:
+                        documento = Monitoria()
+                        documento.fecha = hora_colombia.strftime("%Y-%m-%d")
+                        documento.horas_autorizadas = request.POST['horas']
+                        documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
+                        documento.save()
+                        monitorias_realizadas = Monitoria.objects.filter(
+                            estudiante=estudiante_id
+                        ).aggregate(total_horas=Sum('horas_autorizadas'))['total_horas'] or 0
+                        mensaje_bienvenida = generar_mensaje_bienvenida_monitoria(item[0].nombre)
+                        return JsonResponse({'monitorias_realizadas':monitorias_realizadas,'monitorias_necesarias':monitorias_necesarias,'message' : mensaje_bienvenida, 'status' : '1'}, status=200)
                 else:
-                    documento = Monitoria()
-                    documento.fecha = hora_colombia.strftime("%Y-%m-%d")
-                    documento.horas_autorizadas = request.POST['horas']
-                    documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
-                    documento.save()
-                    monitorias_realizadas = Monitoria.objects.filter(
-                        estudiante=estudiante_id
-                    ).aggregate(total_horas=Sum('horas_autorizadas'))['total_horas'] or 0
-                    estudiante = Estudiante.objects.get(pk=estudiante_id)
-                    monitorias_necesarias = estudiante.monitorias_requeridas()
-                    return JsonResponse({'monitorias_realizadas':monitorias_realizadas,'monitorias_necesarias':monitorias_necesarias,'message' : 'Hola, Bienvenid@ ' + item[0].nombre + ' a tu monitoría', 'status' : '1'}, status=200)
+                    return JsonResponse({'message' : 'El Estudiante ' + item[0].nombre + ' no debe realizar monitorias', 'status' : '0'}, status=200)
         except ValueError:
             return render(request, 'monitoria.html', {
                 'mesage':'Error',

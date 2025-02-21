@@ -17,48 +17,67 @@ function detectarCaracteres() {
 
 async function monitoria_agregar() {
     const csrftoken = getCookie('csrftoken'); 
+
     const { value: password } = await Swal.fire({
         title: 'Ingrese Código de Autorización',
         input: 'password',
         inputPlaceholder: 'Ingrese Código de Autorización',
         inputAttributes: {
-        maxlength: 8,
-        autocapitalize: 'off',
-        autocorrect: 'off'
+            maxlength: 8,
+            autocapitalize: 'off',
+            autocorrect: 'off'
         },
-        showCancelButton: true,
         confirmButtonText: 'Autorizar',
-    })
-    if (password == "98632170") {
+        allowOutsideClick: false, // Evita que se cierre al hacer clic fuera
+        allowEscapeKey: false, // Evita que se cierre con la tecla ESC
+        preConfirm: (password) => {
+            if (!password) {
+                Toastify({
+                    text: "Por favor ingrese el código de autorización",
+                    duration: 5000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "red"
+                }).showToast();
+                return false; // Evita que Swal se cierre
+            }
+            return password;
+        }
+    });
+
+    if (!password) return; // Evita que el resto del código se ejecute si no se ingresó nada
+
+    if (password === "98632170") {
         $.ajax({
             url: '/monitoria/agregar/',
             type: 'POST',
-            headers:{"X-CSRFToken": csrftoken },
-            data: { 
+            headers: { "X-CSRFToken": csrftoken },
+            data: {
                 estudiante: $("#codigo").val(),
                 horas: $("#horas").val()
             },
             success: function (data) {
-                console.log(data)
-                if(data.status != "1") {
+                if (data.status != "1") {
                     Swal.fire({
                         icon: "error",
                         title: data.message,
-                        timer: 5000,  // 5000 milisegundos = 5 segundos
-                        showConfirmButton: false,  // Oculta el botón de "OK"
+                        timer: 5000,
+                        showConfirmButton: false,
                         willClose: () => {
                             $("#codigo").val("");
                             $("#horas").val("");
                             document.getElementById('codigo').focus();
                         }
                     });
-                }else{
+                } else {
+                    porcentaje = ((data.monitorias_realizadas / data.monitorias_necesarias) * 100).toFixed(2);
                     Swal.fire({
                         icon: "success",
                         title: data.message,
-                        timer: 5000,  // 5000 milisegundos = 5 segundos
+                        html: "<table class='table table-borderless' id='progress-table'><tr><td class='col-3'>"+data.monitorias_realizadas + " de " + data.monitorias_necesarias + " horas</td><td class='col-6'><div class='progress progress-info progress-lg'><div class='progress-bar' role='progressbar' style='width:"+porcentaje+"%' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div></div></tr></table>",
+                        timer: 10000,
                         confirmButtonColor: '#81D4FA',
-                        showConfirmButton: false,  // Oculta el botón de "OK"
+                        showConfirmButton: false,
                         willClose: () => {
                             $("#codigo").val("");
                             $("#horas").val("");
@@ -72,15 +91,17 @@ async function monitoria_agregar() {
         Swal.fire({
             icon: "error",
             title: "Código de Autorización Incorrecto",
-            timer: 5000,  // 5000 milisegundos = 5 segundos
-            showConfirmButton: false,  // Oculta el botón de "OK"
+            timer: 5000,
+            showConfirmButton: false,
             willClose: () => {
                 $("#codigo").val("");
                 $("#horas").val("");
+                document.getElementById('codigo').focus();
             }
         });
     }
 }
+
 
 function getCookie(name) {
     let cookieValue = null;

@@ -4,6 +4,9 @@ window.onload = function() {
     document.getElementById("menu_monitoria_admin").setAttribute("class", "submenu-item active");
     monitoria_estudiantes_traer();
 };
+$(document).ready(function() {
+    dataTable = $('#table1').DataTable(); // Inicializa correctamente
+});
 
 // Lista precargada de estudiantes
 const estudiantes = [];
@@ -39,57 +42,46 @@ inputBuscar.addEventListener("input", function () {
 
 function monitoria_traer() {
     const csrftoken = getCookie('csrftoken');
-    var documento = $("#estudiante_id").val();
-    if (documento == "") {
-        $.ajax({
-            url: '/monitoria/traer/todos/',
-            type: 'POST',
-            headers:{"X-CSRFToken": csrftoken },
-            data: { 
-                dato:documento
-            },
-            success: function (data) {
-                console.log(data)
-                var cont = document.getElementById("contenido");
-                cont2 = document.getElementById("progress-table");
-                cont2.innerHTML = "";
-                cont2.innerHTML = "<div class='alert alert-info'><h4 class='alert-heading'>Info</h4><p>Se listaron todas las monitorias ordenadas por fecha</p></div>";
-                cont.innerHTML = "";
-                for (let i = 0; i < data.length; i++) {
-                    let estudianteID = data[i].fields.estudiante; // ID del estudiante
-                    let estudianteObj = estudiantes.find(est => est.id === estudianteID); // Buscar en la lista
-                    let nombreEstudiante = estudianteObj ? estudianteObj.nombre : "Desconocido"; // Si no se encuentra, mostrar "Desconocido"
-                    cont.innerHTML += "<tr><td>"+nombreEstudiante+"</td><td>"+data[i].fields.fecha+"</td></tr>";
-                }
-                $("#estudiante").val("");
-                $("#estudiante_id").val("");
-            }
-        });
-    } else {
-        $.ajax({
-            url: '/monitoria/traer/',
-            type: 'POST',
-            headers:{"X-CSRFToken": csrftoken },
-            data: { 
-                dato:documento
-            },
-            success: function (data) {
-                console.log(data)
-                porcentaje = ((data.monitorias_realizadas / data.monitorias_necesarias) * 100).toFixed(2);
-                var cont = document.getElementById("contenido");
-                var cont3 = document.getElementById("progress-table");
-                cont3.innerHTML = "";
-                cont3.innerHTML = "<tr><td class='col-3'>"+data.monitorias_realizadas + " de " + data.monitorias_necesarias + " monitorias realizadas</td><td class='col-6'><div class='progress progress-info progress-lg'><div class='progress-bar' role='progressbar' style='width:"+porcentaje+"%' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div></div></tr>";
-                cont.innerHTML = "";
-                for (let i = 0; i < data.monitorias.length; i++) {
-                    cont.innerHTML += "<tr><td>"+data.estudiante+"</td><td>"+data.monitorias[i].fecha+"</td></tr>";
-                }
-                $("#estudiante").val("");
-                $("#estudiante_id").val("");
-            }
-        });
-    }
+    const documento = $("#estudiante_id").val();
+    const url = documento ? '/monitoria/traer/' : '/monitoria/traer/todos/';
+    const requestData = { dato: documento };
+
+    dataTable.clear().draw(); // Limpia la tabla
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        headers: { "X-CSRFToken": csrftoken },
+        data: requestData,
+        success: function (data) {
+            console.log(data);
+
+            // Actualizar mensajes de progreso
+            let contProgress = document.getElementById("progress-table");
+            contProgress.innerHTML = documento
+                ? `<tr><td class='col-3'>${data.monitorias_realizadas} de ${data.monitorias_necesarias} horas</td>
+                    <td class='col-6'><div class='progress progress-info progress-lg'>
+                    <div class='progress-bar' role='progressbar' style='width:${((data.monitorias_realizadas / data.monitorias_necesarias) * 100).toFixed(2)}%' 
+                    aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div></div></td></tr>`
+                : `<div class='alert alert-info'><h4 class='alert-heading'>Info</h4><p>Se listaron todas las monitorias ordenadas por fecha</p></div>`;
+
+            // Obtener las filas para DataTable
+            let rows = documento 
+                ? data.monitorias.map(item => [data.estudiante, item.fecha]) 
+                : data.map(item => [
+                    (estudiantes.find(est => est.id === item.fields.estudiante) || { nombre: "Desconocido" }).nombre,
+                    item.fields.fecha
+                ]);
+
+            // Agregar filas a la tabla y refrescar
+            dataTable.rows.add(rows).draw();
+
+            // Limpiar campos de entrada
+            $("#estudiante, #estudiante_id").val("");
+        }
+    });
 }
+
 
 function monitoria_estudiantes_traer() {
     const csrftoken = getCookie('csrftoken');

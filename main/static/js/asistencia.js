@@ -81,7 +81,7 @@ function asistencia_agregar(codigo_carnet) {
                 Swal.fire({
                     icon: "success",
                     title: data.message,
-                    timer: 5000,  // 5000 milisegundos = 5 segundos
+                    timer: 7000,  // 5000 milisegundos = 5 segundos
                     confirmButtonColor: '#81D4FA',
                     showConfirmButton: false,  // Oculta el botón de "OK"
                     willClose: () => {

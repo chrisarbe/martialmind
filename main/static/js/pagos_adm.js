@@ -4,8 +4,17 @@ window.onload = function() {
     document.getElementById("menu_pagos_admin").setAttribute("class", "submenu-item active");
 };
 
+$(document).ready(function() {
+    dataTable = $('#table1').DataTable(); // Inicializa correctamente
+});
+
 function pagos_traer() {
     const csrftoken = getCookie('csrftoken');
+    if (!dataTable) {
+        console.error("DataTable no ha sido inicializado aún.");
+        return;
+    }
+    dataTable.clear().draw(); // Limpia y redibuja la tabla
     pk = $("#fecha_pago").val();
     $.ajax({
         url: '/pagos/traer/',
@@ -18,13 +27,13 @@ function pagos_traer() {
             console.log(data)
             var cont = document.getElementById("contenido");
             cont.innerHTML = "";
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].fields.aldia == true) {
-                    cont.innerHTML += "<tr><td>"+data[i].fields.nombre+"</td><td>"+data[i].fields.apellido+"</td><td><div class='checkbox'><input type='checkbox' id='checkbox"+data[i].pk+"' class='form-check-input' checked></div></td><td><a href='#' onclick='actualizar_pago_estudiante("+data[i].pk+")' class='btn btn-primary'>Actualizar</a></td></tr>";
-                } else {
-                    cont.innerHTML += "<tr><td>"+data[i].fields.nombre+"</td><td>"+data[i].fields.apellido+"</td><td><div class='checkbox'><input type='checkbox' id='checkbox"+data[i].pk+"' class='form-check-input'></div></td><td><a href='#' onclick='actualizar_pago_estudiante("+data[i].pk+")' class='btn btn-primary'>Actualizar</a></td></tr>";
-                }
-            }
+            let rows = data.map(item => [
+                item.fields.nombre,
+                item.fields.apellido,
+                `<div class='checkbox'><input type='checkbox' id='checkbox${item.pk}' class='form-check-input' ${item.fields.aldia ? "checked" : ""}></div>`,
+                `<a href='#' onclick='actualizar_pago_estudiante(${item.pk})' class='btn btn-primary'>Actualizar</a>`
+            ]);
+            dataTable.rows.add(rows).draw();
         }
     });
 }

@@ -32,7 +32,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-4">
-                                    <input class="form-control form-control-lg" type="text"
+                                    <input class="form-control form-control-lg" type="password"
                                         placeholder="Código Carnet" id="codigo" maxlength="8">
                                 </div>
                                 <div class="form-group col-sm-4">
@@ -52,5 +52,7 @@
 </div>
 {% block javascripts %}
     <script src="{% static 'js/monitoria.js' %}"></script>
+    <script src="{% static 'vendors/toastify/toastify.js' %}"></script>
+    <script src="{% static 'js/extensions/toastify.js' %}"></script>
 {% endblock javascripts %}
 {% endblock %}

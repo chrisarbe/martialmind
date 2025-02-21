@@ -1,13 +1,30 @@
+import random
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from datetime import datetime, date
+from django.db.models import Sum
 import pytz
 from django.middleware.csrf import get_token
 
 # Create your views here.
+
+# Lista de frases de bienvenida
+def generar_mensaje_bienvenida(nombre):
+    """Genera un mensaje de bienvenida aleatorio con el nombre del estudiante."""
+    frases_bienvenida = [
+        "¡Hola, Bienvenid@ {}! Que tengas un gran día. \nDios le bendiga.\n🙏",
+        "¡Genial verte de nuevo, {}! Disfruta tu entrenamiento. \nDios le bendiga.\n🙏",
+        "¡Bienvenid@, {}! A dar lo mejor de ti hoy. \nDios le bendiga.\n🙏",
+        "¡Hola, {}! Vamos a entrenar con energía. \nDios le bendiga.\n🙏",
+        "¡Qué bueno verte, {}! Hoy es un gran día para aprender. \nDios le bendiga.\n🙏",
+        "¡Adelante, {}! Tu progreso empieza aquí. \nDios le bendiga.\n🙏",
+        "¡Hola, {}! Tu constancia es inspiradora. \nDios le bendiga.\n🙏"
+    ]
+    return random.choice(frases_bienvenida).format(nombre)
+
 def home(request):
     if request.user.is_authenticated:
         return render(request, 'index.html')
@@ -66,7 +83,7 @@ def asistencia_agregar(request):
         try:
             item = Estudiante.objects.filter(codigo_carnet=request.POST['estudiante'])
             if not item.exists():
-                return JsonResponse({'message' : 'No existe registro con el código de Estudiante: ' + str(request.POST['estudiante']), 'status' : '0'}, status=200)
+                return JsonResponse({'message' : 'No existe registro con el código de Estudiante ingresado', 'status' : '0'}, status=200)
             else:
                 estudiante_id = item[0].id
                 documento_validar = Asistencia.objects.filter(fecha=date.today(), estudiante=item[0].id)
@@ -80,7 +97,8 @@ def asistencia_agregar(request):
                     documento.hora = hora_colombia.strftime("%H:%M:%S")
                     documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
                     documento.save()
-                    return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre, 'status' : '1'}, status=200)
+                    mensaje_bienvenida = generar_mensaje_bienvenida(item[0].nombre)
+                    return JsonResponse({'message' : mensaje_bienvenida, 'status' : '1'}, status=200)
         except ValueError:
             return render(request, 'asistencia.html', {
                 'mesage':'Error',
@@ -160,7 +178,12 @@ def monitoria_agregar(request):
                     documento.horas_autorizadas = request.POST['horas']
                     documento.estudiante = Estudiante.objects.get(pk = estudiante_id)
                     documento.save()
-                    return JsonResponse({'message' : 'Hola, Bienvenid@ ' + item[0].nombre + ' a tu monitoría', 'status' : '1'}, status=200)
+                    monitorias_realizadas = Monitoria.objects.filter(
+                        estudiante=estudiante_id
+                    ).aggregate(total_horas=Sum('horas_autorizadas'))['total_horas'] or 0
+                    estudiante = Estudiante.objects.get(pk=estudiante_id)
+                    monitorias_necesarias = estudiante.monitorias_requeridas()
+                    return JsonResponse({'monitorias_realizadas':monitorias_realizadas,'monitorias_necesarias':monitorias_necesarias,'message' : 'Hola, Bienvenid@ ' + item[0].nombre + ' a tu monitoría', 'status' : '1'}, status=200)
         except ValueError:
             return render(request, 'monitoria.html', {
                 'mesage':'Error',
@@ -168,7 +191,9 @@ def monitoria_agregar(request):
                 })
         
 def monitoria_traer(request):
-    monitorias_realizadas = Monitoria.objects.filter(estudiante=request.POST['dato']).count()
+    monitorias_realizadas = Monitoria.objects.filter(
+        estudiante=request.POST['dato']
+    ).aggregate(total_horas=Sum('horas_autorizadas'))['total_horas'] or 0
     item = Monitoria.objects.filter(estudiante=request.POST['dato']).values("id", "fecha")
     estudiante = Estudiante.objects.get(pk=request.POST['dato'])
     monitorias_necesarias = estudiante.monitorias_requeridas()

@@ -4,6 +4,10 @@ window.onload = function() {
     document.getElementById("menu_municipio").setAttribute("class", "submenu-item active");
 };
 
+$(document).ready(function() {
+    dataTable = $('#table1').DataTable(); // Inicializa correctamente
+});
+
 function municipio_borrar(pk) {
     const csrftoken = getCookie('csrftoken');
     $.ajax({

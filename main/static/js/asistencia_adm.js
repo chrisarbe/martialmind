@@ -5,6 +5,10 @@ window.onload = function() {
     asistencia_estudiantes_traer();
 };
 
+$(document).ready(function() {
+    dataTable = $('#table1').DataTable(); // Inicializa correctamente
+});
+
 // Lista precargada de estudiantes
 const estudiantes = [];
 
@@ -39,52 +43,35 @@ inputBuscar.addEventListener("input", function () {
 
 function asistencia_traer() {
     const csrftoken = getCookie('csrftoken');
-    var documento = $("#estudiante_id").val();
-    if (documento == "") {
-        $.ajax({
-            url: '/asistencia/traer/todos/',
-            type: 'POST',
-            headers:{"X-CSRFToken": csrftoken },
-            data: { 
-                dato:documento
-            },
-            success: function (data) {
-                console.log(data)
-                var cont = document.getElementById("contenido");
-                cont.innerHTML = "";
-                for (let i = 0; i < data.length; i++) {
-                    let estudianteID = data[i].fields.estudiante; // ID del estudiante
-                    let estudianteObj = estudiantes.find(est => est.id === estudianteID); // Buscar en la lista
-                    let nombreEstudiante = estudianteObj ? estudianteObj.nombre : "Desconocido"; // Si no se encuentra, mostrar "Desconocido"
-                    cont.innerHTML += "<tr><td>"+nombreEstudiante+"</td><td>"+data[i].fields.fecha+"</td><td>"+data[i].fields.hora+"</td></tr>";
-                }
-                $("#estudiante").val("");
-                $("#estudiante_id").val("");
-            }
-        });
-    } else {
-        $.ajax({
-            url: '/asistencia/traer/',
-            type: 'POST',
-            headers:{"X-CSRFToken": csrftoken },
-            data: { 
-                dato:documento
-            },
-            success: function (data) {
-                console.log(data)
-                var cont = document.getElementById("contenido");
-                cont.innerHTML = "";
-                for (let i = 0; i < data.length; i++) {
-                    let estudianteID = data[i].fields.estudiante; // ID del estudiante
-                    let estudianteObj = estudiantes.find(est => est.id === estudianteID); // Buscar en la lista
-                    let nombreEstudiante = estudianteObj ? estudianteObj.nombre : "Desconocido"; // Si no se encuentra, mostrar "Desconocido"
-                    cont.innerHTML += "<tr><td>"+nombreEstudiante+"</td><td>"+data[i].fields.fecha+"</td><td>"+data[i].fields.hora+"</td></tr>";
-                }
-                $("#estudiante").val("");
-                $("#estudiante_id").val("");
-            }
-        });
+    let documento = $("#estudiante_id").val();
+
+    if (!dataTable) {
+        console.error("DataTable no ha sido inicializado aún.");
+        return;
     }
+
+    dataTable.clear().draw(); // Limpia y redibuja la tabla
+
+    let url = documento === "" ? '/asistencia/traer/todos/' : '/asistencia/traer/';
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        headers: { "X-CSRFToken": csrftoken },
+        data: { dato: documento },
+        success: function (data) {
+            console.log(data);
+
+            let rows = data.map(item => [
+                (estudiantes.find(est => est.id === item.fields.estudiante) || { nombre: "Desconocido" }).nombre,
+                item.fields.fecha,
+                item.fields.hora
+            ]);
+
+            dataTable.rows.add(rows).draw();
+            $("#estudiante, #estudiante_id").val(""); // Limpia los inputs
+        }
+    });
 }
 
 function asistencia_estudiantes_traer() {
